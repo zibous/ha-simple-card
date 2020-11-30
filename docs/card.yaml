@@ -1,0 +1,148 @@
+views:
+  - title: Layout Testcase
+    panel: true
+    cards:
+      - type: 'custom:cards-layout'
+        title: Auswertung (Header)
+        icon: 'mdi:tape-measure'
+        description: |
+          Testanzeige für verschiedene Darstellungungen:
+          <ul>
+            <li>Bilder</>
+            <li>Grafiken</>
+            <li>Buttons</>
+          </ul>
+        width: 80%
+        cards:
+          - row:
+              - col: null
+                width: 100%
+                title: Testcase Picture
+                description: Darstellung mit einer picture-glance card.
+                entities:
+                  - type: picture-glance
+                    title: Eingang
+                    image: /local/images/rooms/eingang.jpg
+                    entities:
+                      - sun.sun
+          - row:
+              - col: null
+                width: 50%
+                height: 320
+                title: Testcase mit lovelace cards
+                description: >-
+                  Darstellung der Karten custom:simple-card, lovelace-markdown,
+                  custom:chart-card, custom:mini-graph-card.
+                entities:
+                  - type: 'custom:simple-card'
+                    clock: true
+                    style: >
+                      height:300px; background: rgba(0, 0, 0, 0)
+                      linear-gradient(rgb(241, 39,17), rgb(245, 175, 25)) repeat
+                      scroll 0% 0%; height: 300px; color: #FFFFFF
+                    title: Willkommen Fremder
+                    icon: 'mdi:home'
+                    text: >-
+                      Dies ist ein Beispiel für eine einfache Karte mit einer
+                      Uhr.
+                    entities:
+                      - sun.sun
+                  - type: markdown
+                    style: >
+                      height:300px; background: linear-gradient(45deg, #5fc9f8,
+                      #fecb2e, #fd9426, #fc3158, #147efb, #53d769);
+                    content: |
+                      Hello, {{user}} 
+                      markdown card sample
+                  - type: 'custom:chart-card'
+                    title: 'PIE - custom:chart-card'
+                    icon: 'mdi:nutrition'
+                    height: 240
+                    chart: pie
+                    theme:
+                      cardbackground: 'linear-gradient(to bottom, #e6dada, #274046);'
+                    options:
+                      title:
+                        display: true
+                        text: Orangenbaum
+                    entities:
+                      - entity: sensor.orangenbaum_moisture
+                      - entity: sensor.orangenbaum_temperature
+                      - entity: sensor.orangenbaum_conductivity
+                  - type: 'custom:chart-card'
+                    style: |
+                      background: linear-gradient(to bottom, #009fff, #ec2f4b);
+                    title: 'BAR - custom:chart-card'
+                    icon: 'mdi:nutrition'
+                    height: 240
+                    chart: bar
+                    options:
+                      title:
+                        display: true
+                        text: Orangenbaum
+                    entities:
+                      - entity: sensor.orangenbaum_battery
+                      - entity: sensor.orangenbaum_moisture
+                      - entity: sensor.orangenbaum_temperature
+                      - entity: sensor.orangenbaum_conductivity
+                  - type: 'custom:chart-card'
+                    style: |
+                      background: linear-gradient(to bottom, #009fff, #ec2f4b);
+                    title: 'LINE custom:chart-card'
+                    icon: 'mdi:nutrition'
+                    height: 200
+                    chart: line
+                    options:
+                      title:
+                        display: true
+                        text: Gasverbrauch
+                      layout:
+                        padding:
+                          left: 50
+                          right: 50
+                          top: 0
+                          bottom: 0
+                    entities:
+                      - entity: sensor.gas_verbrauch_m3
+                  - type: 'custom:mini-graph-card'
+                    height: 200
+                    style: >
+                      background: linear-gradient(to top, #fc4a1a, #f7b733);
+                      color:#FFFFFF
+                    entities:
+                      - entity: sensor.temperatur_indoor
+                        name: Innenraum
+                      - entity: sensor.orangenbaum_light
+                        name: Licht
+                        y_axis: secondary
+                  - type: sensor
+                    height: 120px
+                    graph: line
+                    entity: sensor.temperatur_indoor
+                    name: Gästezimmer
+          - row:
+              - col: null
+                entities:
+                  - type: 'custom:simple-card'
+                    title: Anzeige von Buttons mit Status
+                    icon: 'mdi:home'
+                    mode: buttons
+                    entities:
+                      - entity: sensor.gas_verbrauch_m3
+                        name: Gas
+                      - entity: sensor.kohlenhydrate_makronahrstoff
+                        name: Kohlenhydrate
+                      - entity: sensor.hacs
+                        style: >
+                          background: linear-gradient(to bottom, #ffc500,
+                          #c21500);color: #FFFFFF;
+                      - entity: sensor.temperatur_indoor
+                      - entity: sensor.orangenbaum_light
+                      - entity: sensor.orangenbaum_moisture
+                      - entity: sensor.orangenbaum_temperature
+                      - entity: sensor.orangenbaum_conductivity
+                      - entity: binary_sensor.night
+                      - entity: binary_sensor.updater
+                      - entity: sensor.gasuhr_status
+                      - entity: sun.sun
+                      - entity: weather.home

@@ -1,0 +1,14 @@
+/node_modules/
+yarn-error.log
+.archiv
+.history
+.DS_Store
+tests/
+release/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

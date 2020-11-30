@@ -1,0 +1,70 @@
+[
+    {
+        "entity_id": "sensor.gasuhr_status",
+        "state": "2020-11-24 15:23:38.139868",
+        "attributes": {
+            "name": "Gaszähler Haus",
+            "device": "gasmeter",
+            "deviceid": "3044269",
+            "date": "2020-11-24",
+            "time": "15:23:38",
+            "value": 64.8,
+            "counter": 648,
+            "m3perhour": 0,
+            "gasuhr": 4695.37,
+            "m3": {
+                "current": 0,
+                "hour": 0,
+                "day": 0,
+                "month": 0,
+                "year": 0
+            },
+            "last_total": {
+                "hour": "15",
+                "hour_m3": -1.1344828230081856e32,
+                "day": "2020-11-24",
+                "day_m3": 3.0864676233249344e34,
+                "month": "2020-11",
+                "month_m3": 3.0864676233249344e34,
+                "year": "2020",
+                "year_m3": 1.273981608179619e36
+            },
+            "alarm": "No alarm",
+            "last_alarm": "No alarm",
+            "periode": "2020-11-24",
+            "month": "2020-11",
+            "year": "2020",
+            "timestamp": "2020-11-24T15:23:38",
+            "last_update": "2020-11-24 15:23:38.139868",
+            "elapsed_time": "0:26:30",
+            "icon": "mdi:billboard",
+            "unit_of_measurement": "㎥",
+            "version": "1.0.2",
+            "attribution": "Data provided by Peter Siebler",
+            "data_provider": "zeusus",
+            "friendly_name": "Gasuhr Status"
+        },
+        "last_changed": "2020-11-24T14:23:38.158171+00:00",
+        "last_updated": "2020-11-24T14:23:38.158171+00:00",
+        "context": {
+            "id": "e584f22ccedabcc27984e17656e9336d",
+            "parent_id": null,
+            "user_id": null
+        }
+    },
+    {
+        "entity_id": "sensor.gas_verbrauch_m3",
+        "state": "6.48",
+        "attributes": {
+            "unit_of_measurement": "m3",
+            "friendly_name": "Gas Verbrauch m3"
+        },
+        "last_changed": "2020-11-24T14:23:38.154336+00:00",
+        "last_updated": "2020-11-24T14:23:38.154336+00:00",
+        "context": {
+            "id": "857f59e9faf01a7208e9aed5d31f67e3",
+            "parent_id": null,
+            "user_id": null
+        }
+    }
+]
