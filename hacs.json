@@ -1,5 +1,5 @@
 {
-    "name": "HA Cardslayout",
+    "name": "HA Simple Card",
     "render_readme": true,
-    "filename": "cards-layout.js"
+    "filename": "ha-simple-card.js"
 }
