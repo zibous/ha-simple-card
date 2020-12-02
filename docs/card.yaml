@@ -24,7 +24,12 @@ views:
                     title: Eingang
                     image: /local/images/rooms/eingang.jpg
                     entities:
-                      - sun.sun
+                      - entity: sensor.orangenbaum_battery
+                      - entity: sensor.orangenbaum_moisture
+                      - entity: sensor.orangenbaum_temperature
+                      - entity: sensor.orangenbaum_conductivity
+                      - entity: sensor.gas_verbrauch_m3
+                      - entity: sensor.temperatur_indoor
           - row:
               - col: null
                 width: 50%
@@ -57,7 +62,8 @@ views:
                   - type: 'custom:chart-card'
                     title: 'PIE - custom:chart-card'
                     icon: 'mdi:nutrition'
-                    height: 240
+                    height: 220
+                    maxwidth: 420
                     chart: pie
                     theme:
                       cardbackground: 'linear-gradient(to bottom, #e6dada, #274046);'
@@ -74,7 +80,8 @@ views:
                       background: linear-gradient(to bottom, #009fff, #ec2f4b);
                     title: 'BAR - custom:chart-card'
                     icon: 'mdi:nutrition'
-                    height: 240
+                    height: 220
+                    maxwidth: 420
                     chart: bar
                     options:
                       title:
@@ -90,7 +97,8 @@ views:
                       background: linear-gradient(to bottom, #009fff, #ec2f4b);
                     title: 'LINE custom:chart-card'
                     icon: 'mdi:nutrition'
-                    height: 200
+                    height: 220
+                    maxwidth: 420
                     chart: line
                     options:
                       title:
@@ -104,8 +112,26 @@ views:
                           bottom: 0
                     entities:
                       - entity: sensor.gas_verbrauch_m3
+                  - type: 'custom:chart-card'
+                    title: 'LINE2 custom:chart-card'
+                    icon: 'mdi:chart-box'
+                    height: 220
+                    maxwidth: 420
+                    chart: line
+                    options:
+                      title:
+                        display: true
+                        text: Innnenraum
+                      layout:
+                        padding:
+                          left: 50
+                          right: 50
+                          top: 0
+                          bottom: 0
+                    entities:
+                      - entity: sensor.temperatur_indoor
+                        fill: true
                   - type: 'custom:mini-graph-card'
-                    height: 200
                     style: >
                       background: linear-gradient(to top, #fc4a1a, #f7b733);
                       color:#FFFFFF
@@ -115,11 +141,21 @@ views:
                       - entity: sensor.orangenbaum_light
                         name: Licht
                         y_axis: secondary
+          - row:
+              - col: null
+                width: 160
+                height: 160
+                entities:
                   - type: sensor
-                    height: 120px
                     graph: line
                     entity: sensor.temperatur_indoor
-                    name: Gästezimmer
+                    name: lovelace sensor
+                  - type: sensor
+                    graph: line
+                    name: Orangenbaum
+                    entity: sensor.orangenbaum_temperature
+                  - type: light
+                    entity: light.fitnessraum_licht
           - row:
               - col: null
                 entities:
@@ -128,6 +164,9 @@ views:
                     icon: 'mdi:home'
                     mode: buttons
                     entities:
+                      - entity: person.admin
+                        name: Peter
+                        image: /local/images/peter.jpg
                       - entity: sensor.gas_verbrauch_m3
                         name: Gas
                       - entity: sensor.kohlenhydrate_makronahrstoff
@@ -137,12 +176,16 @@ views:
                           background: linear-gradient(to bottom, #ffc500,
                           #c21500);color: #FFFFFF;
                       - entity: sensor.temperatur_indoor
+                        type: digitbutton
                       - entity: sensor.orangenbaum_light
                       - entity: sensor.orangenbaum_moisture
                       - entity: sensor.orangenbaum_temperature
                       - entity: sensor.orangenbaum_conductivity
+                        type: digitbutton
                       - entity: binary_sensor.night
                       - entity: binary_sensor.updater
                       - entity: sensor.gasuhr_status
                       - entity: sun.sun
                       - entity: weather.home
+                      - entity: light.fitnessraum_licht
+                        icon: 'mdi:floor-lamp'

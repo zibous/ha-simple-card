@@ -2,7 +2,8 @@
 
 const appinfo = {
     name: "✓ custom:simple-card",
-    version: "0.0.5"
+    version: "0.0.6",
+    assets: '/hacsfiles/ha-simple-card/assets/'
 };
 console.info(
     "%c " + appinfo.name + "     %c ▪︎▪︎▪︎▪︎ Version: " + appinfo.version + " ▪︎▪︎▪︎▪︎ ",
@@ -116,6 +117,7 @@ class SimpleCard extends HTMLElement {
             position: relative;
             top: -3px;
             padding-right: 6px;
+            color: var(--primary-text-color)
           }
           h2.sc-title{
             font-size: 1.75em;
@@ -127,12 +129,31 @@ class SimpleCard extends HTMLElement {
             white-space: nowrap;
             display: inline-block;
             margin: 0 0 0.5em 0.5em;
+            color: var(--primary-text-color)
           }
           p.sc-text{
             font-size: 1.2em;
             font-weight: 300;
             margin: 0 1.5em;
           }
+          @media (min-width: 481px) and (max-width: 767px) {
+            h2.sc-title{
+              margin: 0 0 0.5em 0; 
+              font-size: 1.5em;
+            }
+            p.sc-text{
+                font-size: 1.1em;
+            }
+         }
+         @media (min-width: 320px) and (max-width: 480px){
+            h2.sc-title{
+                margin: 0 0 0.5em 0; 
+                font-size: 1.5em;
+            }
+            p.sc-text{
+                font-size: 1.1em;
+            }
+         }
         `;
         this.root.append(_style);
         return true;

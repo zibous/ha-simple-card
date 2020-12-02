@@ -17,7 +17,7 @@ const settings = {
     releasefolder: "./release",
     releasefile: "ha-simple-card.zip",
     hassfolder: "/Volumes/zeususdata/home/homeassistant/.homeassistant/www/community/ha-simple-card",
-    rb3afolder: "/Volumes/data-1/home/homeassistant/.homeassistant/www/community/ha-simple-card"
+    rb3afolder: "/Volumes/rb3a-data/home/homeassistant/.homeassistant/www/community/ha-simple-card"
 };
 
 // Command line option:

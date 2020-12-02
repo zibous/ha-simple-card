@@ -71,6 +71,20 @@
 | text | string | optional | 
 | entities | list | optional | 
 
+
+### Options Simple Card buttons entities
+
+| Name | Type | Default | Example
+| ---- | ---- | ------- | -----------
+| entity | string | **Required** | `sensor.orangenbaum_light`
+| type | string | optional | `digitbutton`, `default`
+| name | string | optional | overwrites the entity name
+| icon | string | optional | overwrites the entity icon
+| image | string | optional | used instead as entity icon
+| style | string | optional | see `Entity Style examples`
+
+
+
 ### Entity Style examples
 
 ```yaml

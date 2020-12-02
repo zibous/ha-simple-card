@@ -18,7 +18,7 @@
  *       })
  */
 
-class buttons{
+class buttons {
     /**
      * constructor for buttons
      * @param {*} config
@@ -46,6 +46,7 @@ class buttons{
         _style.textContent = `
             div.sc-buttons{
                 position:relative;
+                margin-left: 0.5em;
                 width:100%;
                 height:100%
             }
@@ -61,7 +62,8 @@ class buttons{
                 padding:10px;
                 background-color: var(--tile-background, rgba(255, 255, 255, 1));
                 border-radius: var(--tile-border-radius, 12px);
-                box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3);
+                box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.15);
+                box-shadow1: var(--ha-card-box-shadow, 5px 5px 8px rgba(0, 0, 0, 0.14), -5px -5px 8px rgba(0, 0, 0, 0.12));
                 margin: 0.5em;
                 position: relative;
                 overflow:hidden;
@@ -72,7 +74,7 @@ class buttons{
             }
             div.sc-button.off {
                 filter: brightness(0.7) !important;
-                color: var(--tile-on-name-text-color, rgba(0, 0, 0, 0.60)) !important;
+                color: var(--tile-on-name-text-color, rgba(0, 0, 0, 0.40)) !important;
             }
             div.sc-button-data{
                 position: absolute;
@@ -81,15 +83,25 @@ class buttons{
                 width: 100%;
                 background: transparent;
             }
-            div.sc-button-name{
-                margin: 0 8px;  
-                font-weight: 500;
+            div.sc-digitbutton-data{
+                position: absolute;
+                left: 0;
+                bottom: 0;
+                width: 100%;
+                height: calc(100% - 42px);
+                background: transparent;
+                color: var(--tile-on-name-text-color, rgba(0, 0, 0, 0.60)) !important;
+            }
+            div.sc-button-name, div.sc-digitbutton-name{
+                margin: 0 8px;
+                font-weight: 400;
                 width: 90%;
                 overflow:hidden;
                 text-overflow: ellipsis;
                 white-space: nowrap;
+                color: var(--tile-on-name-text-color, rgba(0, 0, 0, 0.60));
             }
-            div.sc-button-value{
+            div.sc-button-value, div.sc-digitbutton-value{
                 margin: 0 8px;  
                 width: 85%;
                 font-weight: 500;
@@ -97,6 +109,26 @@ class buttons{
                 overflow:hidden;
                 text-overflow: ellipsis;
                 white-space: nowrap;
+            }
+            div.sc-digitbutton-value{
+                font-weight: 400;
+                text-align:center;
+                vertical-align:top;
+                font-size: 2.2em;
+                line-height:2.3em;
+            }
+            div.sc-digitbutton-value span{
+                font-size: 0.45em;
+                vertical-align: top;
+                display: inline-block;
+                position: relative;
+                top: -7px;
+                left: 4px;
+            }
+            div.sc-digitbutton-name{
+                position:relative;
+                bottom:8px;
+                font-size: 0.8em;
             }
             div.sc-button-date{
                 margin: 0 8px;  
@@ -117,7 +149,6 @@ class buttons{
                 height: 40px;
                 cursor: pointer;
             }
-
             div.sc-button .icon {
                 display:block;
                 height: calc(var(--tile-icon-size, 30px) + 10px);
@@ -139,15 +170,29 @@ class buttons{
             div.sc-button .icon.off {
                 color: var(--tile-icon-color, rgba(0, 0, 0, 0.3));
             }
-            div.sc-button .icon.image img {
-                width:100%;
-                border-radius: var(--tile-image-radius, 100%)
+            div.sc-button .icon.image{
+                position: relative;
+                top: 0;
+                left: 0;
+                width: 42px;
+                border-radius: var(--tile-image-radius, 100%);
             }
-    
             div.sc-button .icon ha-icon {
                 width:30px;
                 height:30px;
                 pointer-events: none;
+            }
+            @media (min-width: 481px) and (max-width: 767px) {
+                div.sc-button{
+                    transform: scale(0.90);
+                    margin: -0.3em;
+                }
+            }
+            @media (min-width: 320px) and (max-width: 480px){
+                div.sc-button{
+                    transform: scale(0.70);
+                    margin: -1.10em;
+                }
             }
         `;
         this.parentNode.append(_style);
@@ -229,26 +274,58 @@ class buttons{
     }
 
     /**
-     * render the button content
+     * render digit button content
+     * @param {*} _button
+     * @param {*} button_data
+     */
+    renderDigitButton(_button, button_data) {
+        this._checkButtonState(_button, button_data);
+        let html = [];
+        if (button_data.image) {
+            html.push(`<img class="icon image" src="${button_data.image}" alt="" />`)
+        } else {
+            html.push(
+                `<ha-icon id="${button_data.id}I" class="icon ${this.buttonstate.status}" icon="${button_data.icon}"></ha-icon>`
+            );
+        }
+        html.push(`${this.renderCircleState(button_data)}`);
+        html.push(`<div class="sc-digitbutton-data">  
+                    <div id="${button_data.id}V" class="sc-digitbutton-value">${button_data.value}
+                        <span>${button_data.unit}<span>
+                    </div>
+                    <div class="sc-digitbutton-name">${button_data.name.toUpperCase()}</div>
+                   </div>
+        `);
+        _button.innerHTML = html.join("");
+    }
+
+    /**
+     * render the default button content
      * with the data from the current entity
      *
      * @param {*} _button
      * @param {*} button_data
      * @called renderbuttons, updatebuttons
      */
-    renderButtonContent(_button, button_data) {
+    renderDefaultButton(_button, button_data) {
         this._checkButtonState(_button, button_data);
-        _button.innerHTML = `
-            <ha-icon id="${button_data.id}I" class="icon ${this.buttonstate.status}" icon="${
-            button_data.icon
-        }"></ha-icon>
-            ${this.renderCircleState(button_data)}
-            <div class="sc-button-data">  
-            <div class="sc-button-name">${button_data.name.toUpperCase()}</div>
-            <div id="${button_data.id}V" class="sc-button-value">${button_data.value} ${button_data.unit}</div>
-            <div id="${button_data.id}D" class="sc-button-date">${button_data.date}</div>
-            </div>
-        `;
+        let html = [];
+        if (button_data.image) {
+            html.push(`<img class="icon image img" src="${button_data.image}" alt="" />`)
+        } else {
+            html.push(
+                `<ha-icon id="${button_data.id}I" class="icon ${this.buttonstate.status}" icon="${button_data.icon}"></ha-icon>`
+            );
+        }
+        html.push(`${this.renderCircleState(button_data)}`);
+        html.push(`
+          <div class="sc-button-data">  
+          <div class="sc-button-name">${button_data.name.toUpperCase()}</div>
+          <div id="${button_data.id}V" class="sc-button-value">${button_data.value} ${button_data.unit}</div>
+          <div id="${button_data.id}D" class="sc-button-date">${button_data.date}</div>
+          </div>
+        `);
+        _button.innerHTML = html.join("");
     }
 
     /**
@@ -273,7 +350,8 @@ class buttons{
             status: this.buttonstate.status || "off",
             brightness: h && h.attributes ? h.attributes.brightness : null,
             rgb_color: h && h.attributes ? h.attributes.rgb_color : null,
-            xy_color: h && h.attributes ? h.attributes.xy_color : null
+            xy_color: h && h.attributes ? h.attributes.xy_color : null,
+            image: entity.image || null
         };
     }
 
@@ -334,8 +412,14 @@ class buttons{
                 button_data.value = localValue(h.state, this.locale) || "";
                 button_data.date = localDatetime(h.last_updated, this.locale) || "";
                 button_data.circle = this._calculateTime(h.last_updated) || "";
-                const button = this.buttonslist[entity.entity_id];
-                this.renderButtonContent(button, button_data);
+                const _button = this.buttonslist[entity.entity_id];
+                switch (entity.type) {
+                    case "digitbutton":
+                        this.renderDigitButton(_button, button_data);
+                        break;
+                    default:
+                        this.renderDefaultButton(_button, button_data);
+                }
             }
         });
     }
@@ -360,7 +444,13 @@ class buttons{
                     button_data.value = entity.text || "Status";
                     button_data.unit = "";
                 }
-                this.renderButtonContent(_button, button_data);
+                switch (entity.type) {
+                    case "digitbutton":
+                        this.renderDigitButton(_button, button_data);
+                        break;
+                    default:
+                        this.renderDefaultButton(_button, button_data);
+                }
                 if (this.shadowRoot) _button.onclick = this._clickAction.bind(this, entity.entity_id);
                 this.buttonslist[_button.id] = _button;
                 // add the button to the layer
@@ -719,7 +809,8 @@ function deepMerge(...sources) {
 
 const appinfo = {
     name: "✓ custom:simple-card",
-    version: "0.0.5"
+    version: "0.0.6",
+    assets: '/hacsfiles/ha-simple-card/assets/'
 };
 console.info(
     "%c " + appinfo.name + "     %c ▪︎▪︎▪︎▪︎ Version: " + appinfo.version + " ▪︎▪︎▪︎▪︎ ",
@@ -833,6 +924,7 @@ class SimpleCard extends HTMLElement {
             position: relative;
             top: -3px;
             padding-right: 6px;
+            color: var(--primary-text-color)
           }
           h2.sc-title{
             font-size: 1.75em;
@@ -844,12 +936,31 @@ class SimpleCard extends HTMLElement {
             white-space: nowrap;
             display: inline-block;
             margin: 0 0 0.5em 0.5em;
+            color: var(--primary-text-color)
           }
           p.sc-text{
             font-size: 1.2em;
             font-weight: 300;
             margin: 0 1.5em;
           }
+          @media (min-width: 481px) and (max-width: 767px) {
+            h2.sc-title{
+              margin: 0 0 0.5em 0; 
+              font-size: 1.5em;
+            }
+            p.sc-text{
+                font-size: 1.1em;
+            }
+         }
+         @media (min-width: 320px) and (max-width: 480px){
+            h2.sc-title{
+                margin: 0 0 0.5em 0; 
+                font-size: 1.5em;
+            }
+            p.sc-text{
+                font-size: 1.1em;
+            }
+         }
         `;
         this.root.append(_style);
         return true;
