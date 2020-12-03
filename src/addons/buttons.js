@@ -319,6 +319,14 @@ class buttons {
         _button.innerHTML = html.join("");
     }
 
+    tranlate(key, value){
+        // const key = "state." + _entityName + "." + entity.state
+        // this.hass.resources[this.hass.language]["state.person.home"]
+        // const lang = this.hass.selectedLanguage || this.hass.language;
+        const resources = this.hass.resources[lang];
+        return (resources && resources[key] ? resources[key] : value);
+    }
+
     /**
      * get Button data
      * @param {*} entity
