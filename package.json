@@ -21,7 +21,8 @@
   "repository": "https://github.com/zibous/ha-simple-card",
   "dependencies": {},
   "scripts": {
-    "build": "gulp"
+    "deploy": "gulp",
+    "release": "gulp release"
   },
   "devDependencies": {
     "del": "^6.0.0",

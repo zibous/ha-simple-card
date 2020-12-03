@@ -136,6 +136,17 @@ gulp.task("build", function () {
 });
 
 /**
+ * release task
+ */
+gulp.task(
+    "release",
+    gulp.series(["cleanup", "build", "release"], function (done) {
+        // task code here
+        done();
+    })
+);
+
+/**
  * default task
  * gulp.series(["cleanup", "build", "build-libs", "release", "deploy"], function (done) {
  */
