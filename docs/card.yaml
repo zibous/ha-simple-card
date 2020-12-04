@@ -118,6 +118,7 @@ views:
                     height: 220
                     maxwidth: 420
                     chart: line
+                    loader: three-dots
                     options:
                       title:
                         display: true
@@ -154,8 +155,38 @@ views:
                     graph: line
                     name: Orangenbaum
                     entity: sensor.orangenbaum_temperature
+          - row:
+              - col: null
+                width: 280
+                height: 240
+                entities:
                   - type: light
                     entity: light.fitnessraum_licht
+                  - type: thermostat
+                    entity: climate.zentralheizung
+                    style: |
+                      max-height: 240px
+                  - type: alarm-panel
+                    name: House Alarm
+                    entity: alarm_control_panel.home_alarm
+                    style: |
+                      max-height: 240px;
+                      overflow:hidden;
+                  - type: 'custom:simple-card'
+                    title: Wetterdaten
+                    icon: 'mdi:weather-cloudy'
+                    mode: entities_card
+                    entity: weather.home
+                    filter:
+                      include:
+                        - key: weather.home.temperature
+                          name: Temperatur
+                          icon: 'mdi:thermometer'
+                          unit: °C
+                        - key: weather.home.humidity
+                          name: Feuchtigkeit
+                          icon: 'mdi:water'
+                          unit: '%'
           - row:
               - col: null
                 entities:
@@ -189,3 +220,5 @@ views:
                       - entity: weather.home
                       - entity: light.fitnessraum_licht
                         icon: 'mdi:floor-lamp'
+                      - entity: climate.zentralheizung
+                      - entity: alarm_control_panel.home_alarm

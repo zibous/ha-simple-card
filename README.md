@@ -1,7 +1,7 @@
 # Homeassitant Simple Card
 
 
-> DEVELOPER PREVIEW VERSION NOT FINAL
+> DEVELOPER PREVIEW VERSION `v0.0.7` NOT FINAL
 > I'm still looking for help and would be happy if someone would get in touch to help me complete and improve the cards-layout.
 
 ![ha-simple-card.png](docs/ha-simple-card.png)
@@ -19,7 +19,7 @@
   - Android Browser (Chrome, Firefox, Vivaldi)
 
 
-## stallation
+## Installation
 
 ### Manual install
 
@@ -36,7 +36,8 @@
 
    <br>
 
-## Options Simple Card
+## Options "Simple Card"
+A simple card with title (optional icon) and text
 
 | Name | Type | Default | Example
 | ---- | ---- | ------- | -----------
@@ -47,7 +48,8 @@
 | style | string | optional  |
 | entities | list | optional | 
 
-## Options Simple Card clock
+## Options "Simple Card clock"
+A simple card with title (optional icon) and text and a simple clock
 
 | Name | Type | Default | Example
 | ---- | ---- | ------- | -----------
@@ -59,7 +61,8 @@
 | text | string | optional | 
 | entities | list | optional | 
 
-## Options Simple Card buttons
+## Options "Simple Card buttons"
+A simple card with different buttons (homkit style)
 
 | Name | Type | Default | Example
 | ---- | ---- | ------- | -----------
@@ -72,7 +75,7 @@
 | entities | list | optional | 
 
 
-### Options Simple Card buttons entities
+### Options for "Simple Card buttons entities"
 
 | Name | Type | Default | Example
 | ---- | ---- | ------- | -----------
@@ -83,6 +86,26 @@
 | image | string | optional | used instead as entity icon
 | style | string | optional | see `Entity Style examples`
 
+### Options for "Simple Entities card"
+a simple map for displaying basic attributes from multiple entities.
+
+| Name | Type | Default | Example
+| ---- | ---- | ------- | -----------
+| type | string | **Required** | `custom:simple-card`
+| title | string | optional | 
+| icon | string | optional | 
+| mode | string | **Required**  | `entities_card`
+| style | string | optional  |
+| filter | object | **Required** | A filter object that can contain `include` and `exclude` sections
+
+⚠️ `include` and `exclude` can be simple lists (format `[domain]`.`[entity]`.`[attribute]`) or objects of type below. `[attribute]` can also be a pattern.
+
+| Name | Type | Default | Description
+| ---- | ---- | ------- | -----------
+| key | string | **Required** | A pattern for the attribute. Example: `weather.home.temperature`
+| name | string | optional | A string to replace the actual attribute name with
+| unit | string | optional | A string to append an arbitrary unit to the value
+| icon | string | optional | A string to append the icon to the name `mdi:mdi:thermometer`
 
 
 ### Entity Style examples
@@ -93,6 +116,7 @@
        background: linear-gradient(to top, #fc4a1a, #f7b733);
        color:#FFFFFF;
 ```
+
 ## Using the card
 
 Add a custom card in your `ui-lovelace.yaml`
@@ -158,6 +182,7 @@ views:
                         icon: 'mdi:floor-lamp'
 
 ```
+
 <a href="https://www.buymeacoff.ee/zibous" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="41" width="174"></a>
 
 
@@ -173,5 +198,6 @@ views:
 
 
 ## Credits
-
 - [Homekit-panel-card](https://github.com/DBuit/Homekit-panel-card) - Homekit panel card for home assistant 
+- [Entity-attributes-card](https://github.com/custom-cards/entity-attributes-card) - Entity attributes allows you to show basic attributes from multiple entities.
+

@@ -16,6 +16,7 @@
  *        hassEntities: this.hassEntities,
  *        locale: this.locale,
  *       })
+ *  credits https://github.com/DBuit/Homekit-panel-card
  */
 
 class buttons {
@@ -201,6 +202,7 @@ class buttons {
 
     /**
      * calculate the update time
+     * credits https://github.com/DBuit/Homekit-panel-card
      * @param {*} lastUpdated
      */
     _calculateTime(lastUpdated) {
@@ -239,6 +241,7 @@ class buttons {
 
     /**
      * render state circle for a sensor
+     * credits https://github.com/DBuit/Homekit-panel-card
      * @param {*} ent
      * @param {*} stateObj
      * @param {*} type
@@ -828,8 +831,8 @@ function deepMerge(...sources) {
 
 const appinfo = {
     name: "✓ custom:simple-card",
-    version: "0.0.6",
-    assets: '/hacsfiles/ha-simple-card/assets/'
+    version: "0.0.7",
+    assets: "/hacsfiles/ha-simple-card/assets/"
 };
 console.info(
     "%c " + appinfo.name + "     %c ▪︎▪︎▪︎▪︎ Version: " + appinfo.version + " ▪︎▪︎▪︎▪︎ ",
@@ -867,6 +870,55 @@ class SimpleCard extends HTMLElement {
         this.hassEntities = this.entities
             .map((x) => this._hass.states[x.entity])
             .filter((notUndefined) => notUndefined !== undefined);
+    }
+
+    /**
+     * get attributes for the entities card
+     * credits: https://github.com/custom-cards/entity-attributes-card
+     * @param {*} hass
+     * @param {*} filters
+     */
+    _getAttributes(hass, filters) {
+        function _filterName(stateObj, pattern) {
+            let parts;
+            let attr_id;
+            let attribute;
+            if (typeof pattern === "object") {
+                parts = pattern["key"].split(".");
+                attribute = pattern["key"];
+            } else {
+                parts = pattern.split(".");
+                attribute = pattern;
+            }
+            attr_id = parts[2];
+            if (attr_id.indexOf("*") === -1) {
+                return stateObj == attribute;
+            }
+            const regEx = new RegExp(`^${attribute.replace(/\*/g, ".*")}$`, "i");
+            return stateObj.search(regEx) === 0;
+        }
+        const attributes = new Map();
+        filters.forEach((filter) => {
+            const filters = [];
+            filters.push((stateObj) => _filterName(stateObj, filter));
+            Object.keys(hass.states)
+                .sort()
+                .forEach((key) => {
+                    Object.keys(hass.states[key].attributes)
+                        .sort()
+                        .forEach((attr_key) => {
+                            if (filters.every((filterFunc) => filterFunc(`${key}.${attr_key}`))) {
+                                attributes.set(`${key}.${attr_key}`, {
+                                    name: filter.name ? filter.name : attr_key.replace(/_/g, " "),
+                                    value: hass.states[key].attributes[attr_key],
+                                    unit: filter.unit || "",
+                                    icon: filter.icon || ""
+                                });
+                            }
+                        });
+                });
+        });
+        return Array.from(attributes.values());
     }
 
     /**
@@ -923,6 +975,20 @@ class SimpleCard extends HTMLElement {
                         this.buttons.updateButtons();
                     }
                     break;
+                case "entities_card":
+                    if (this.attibutesfilter && this.attibutesfilter.include) {
+                        let attributes = this._getAttributes(this._hass, this.attibutesfilter.include);
+                        if (this.attibutesfilter.exclude) {
+                            const excludeAttributes = this._getAttributes(this._hass, this.attibutesfilter.exclude).map(
+                                (attr) => attr.name
+                            );
+                            attributes = attributes.filter((attr) => {
+                                return !excludeAttributes.includes(attr.name);
+                            });
+                        }
+                        this.updateDataTable(this.root.getElementById("entities_card"), attributes);
+                    }
+                    break;
                 default:
             }
         }
@@ -942,13 +1008,13 @@ class SimpleCard extends HTMLElement {
           .sc-icon{
             position: relative;
             top: -3px;
-            padding-right: 6px;
             color: var(--primary-text-color)
           }
           h2.sc-title{
             font-size: 1.75em;
             font-weight: 500;
             padding-top: 1em;
+            padding-left: 6px;
             width: 95%;
             overflow:hidden;
             text-overflow: ellipsis;
@@ -961,6 +1027,22 @@ class SimpleCard extends HTMLElement {
             font-size: 1.2em;
             font-weight: 300;
             margin: 0 1.5em;
+          }
+          div.dt-data{
+            width: 100%;
+            height:100%;
+          }
+          table.dt-data {
+            width: 100%;
+            padding: 0 1.5em 1em 1.2em;
+            line-height: 1.8em;
+          }
+          table.dt-data td.dt-name{
+            text-align:left;
+            font-weight:400;
+          }
+          table.dt-data td.dt-value{
+            text-align:right;
           }
           @media (min-width: 481px) and (max-width: 767px) {
             h2.sc-title{
@@ -975,6 +1057,7 @@ class SimpleCard extends HTMLElement {
             h2.sc-title{
                 margin: 0 0 0.5em 0; 
                 font-size: 1.5em;
+                padding-left: 6px;
             }
             p.sc-text{
                 font-size: 1.1em;
@@ -983,6 +1066,27 @@ class SimpleCard extends HTMLElement {
         `;
         this.root.append(_style);
         return true;
+    }
+
+    /**
+     * update all entity attributtes for the datatable
+     * @param {*} element
+     * @param {*} attributes
+     */
+    updateDataTable(element, attributes) {
+        if (!element || !attributes) return;
+        element.innerHTML = `
+            ${attributes
+                .map(
+                    (attribute) => `
+              <tr>
+                <td class="dt-name">${(attribute.icon)?'<ha-icon icon="' + attribute.icon + '" ></ha-icon>':''}${attribute.name}</td>
+                <td class="dt-value">${localValue(attribute.value, this.locale)}${attribute.unit}</td>
+              </tr>
+            `
+                )
+                .join("")}
+          `;
     }
 
     /**
@@ -1005,6 +1109,7 @@ class SimpleCard extends HTMLElement {
                 view_titletext.innerHTML = this._config.title;
                 _title.appendChild(view_titletext);
             } else {
+                _title.style.cssText = "margin-left:0.8em !important";
                 _title.innerHTML = this._config.title;
             }
             content.appendChild(_title);
@@ -1040,6 +1145,19 @@ class SimpleCard extends HTMLElement {
             _text.innerHTML = this._config.text;
             content.appendChild(_text);
         }
+
+        if (this.mode == "entities_card") {
+            // add datatable for then entities_card
+            const datatable = document.createElement("div");
+            datatable.setAttribute("class", "dt-data");
+            datatable.innerHTML = `
+                <table class="dt-data">
+                    <tbody id="entities_card">
+                    </tbody>
+                </table>
+            `;
+            content.appendChild(datatable);
+        }
     }
 
     /**
@@ -1060,7 +1178,6 @@ class SimpleCard extends HTMLElement {
         const content = document.createElement("div");
         content.id = "content-" + eId;
         content.style.height = content.style.minHeight = this.height + "px";
-
         this.createCardContent(content);
         this.card.appendChild(content);
         this.root.appendChild(this.card);
@@ -1089,7 +1206,9 @@ class SimpleCard extends HTMLElement {
      */
     setConfig(config) {
         this.root = this.shadowRoot;
+        if (this.root.lastChild) this.root.removeChild(root.lastChild);
         if (!this._config) {
+            // this._config = Object.assign({}, config);
             this._config = config;
             this.id = Math.random().toString(36).substr(2, 9);
             const _browserlocale = navigator.language || navigator.userLanguage || "en-GB";
@@ -1101,6 +1220,12 @@ class SimpleCard extends HTMLElement {
             this.title = this._config.title;
             this.text = this._config.text;
             this.mode = this._config.mode;
+            if (!["buttons", "entities_card"].includes(this.mode)) {
+                this.mode = "default";
+            }
+            // attribute datatable
+            this.attibutesfilter = this._config.filter || null;
+            if (this.attibutesfilter) console.log(this.attibutesfilter);
             this.skipRender = false;
             this.entities = [];
             this.hassEntities = [];

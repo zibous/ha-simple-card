@@ -7,6 +7,7 @@
  *        hassEntities: this.hassEntities,
  *        locale: this.locale,
  *       })
+ *  credits https://github.com/DBuit/Homekit-panel-card
  */
 
 class buttons {
@@ -192,6 +193,7 @@ class buttons {
 
     /**
      * calculate the update time
+     * credits https://github.com/DBuit/Homekit-panel-card
      * @param {*} lastUpdated
      */
     _calculateTime(lastUpdated) {
@@ -230,6 +232,7 @@ class buttons {
 
     /**
      * render state circle for a sensor
+     * credits https://github.com/DBuit/Homekit-panel-card
      * @param {*} ent
      * @param {*} stateObj
      * @param {*} type
