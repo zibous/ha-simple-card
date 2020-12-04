@@ -282,7 +282,7 @@ class buttons {
         this._checkButtonState(_button, button_data);
         let html = [];
         if (button_data.image) {
-            html.push(`<img class="icon image" src="${button_data.image}" alt="" />`)
+            html.push(`<img class="icon image" src="${button_data.image}" alt="" />`);
         } else {
             html.push(
                 `<ha-icon id="${button_data.id}I" class="icon ${this.buttonstate.status}" icon="${button_data.icon}"></ha-icon>`
@@ -311,7 +311,7 @@ class buttons {
         this._checkButtonState(_button, button_data);
         let html = [];
         if (button_data.image) {
-            html.push(`<img class="icon image img" src="${button_data.image}" alt="" />`)
+            html.push(`<img class="icon image img" src="${button_data.image}" alt="" />`);
         } else {
             html.push(
                 `<ha-icon id="${button_data.id}I" class="icon ${this.buttonstate.status}" icon="${button_data.icon}"></ha-icon>`
@@ -329,6 +329,21 @@ class buttons {
     }
 
     /**
+     * Translate the state value
+     * TODO: find a better way to translate values...
+     * @param {string} key
+     * @param {string} value
+     */
+    tranlate(key, value) {
+        // const key = "state." + _entityName + "." + entity.state
+        // this.hass.resources[this.hass.language]["state.person.home"]
+        console.log(key)
+        const lang = this.hass.selectedLanguage || this.hass.language;
+        const resources = this.hass.resources[lang] || "de";
+        return resources && resources[key] ? resources[key] : value;
+    }
+
+    /**
      * get Button data
      * @param {*} entity
      */
@@ -337,6 +352,10 @@ class buttons {
         const _entityType = entity.entity_id.split(".")[0] || "alert";
         const _entityName = entity.entity_id.split(".")[1];
         const h = this.hassEntities.find((x) => x.entity_id === entity.entity);
+        // try to translate...
+        // if (entity.state.constructor === String) {
+        //    entity.state = this.tranlate("state." + _entityName + "." + entity.state, entity.state);
+        // }
         return {
             id: entity.entity_id,
             name: entity.name || _entityName || entity.attributes.name || entity.entity_id,

@@ -163,6 +163,7 @@ views:
 
 ## TODO
  - better css handling (load css once not per card)
+ - find a better way to translate state values (string)
 
 ## Helper
 
