@@ -1031,9 +1031,11 @@ class SimpleCard extends HTMLElement {
           div.dt-data{
             width: 100%;
             height:100%;
+            overflow:scroll;
           }
           table.dt-data {
             width: 100%;
+            height: 100%;
             padding: 0 1.5em 1em 1.2em;
             line-height: 1.8em;
           }
@@ -1095,6 +1097,10 @@ class SimpleCard extends HTMLElement {
      */
     createCardContent(content) {
         if (!content) return;
+
+        const useLayer = this.height!='100%';
+        let contentLayer = null;
+
         if (this._config.title) {
             // add the title and the icon to the ha-card
             const _title = document.createElement("h2");
@@ -1135,6 +1141,12 @@ class SimpleCard extends HTMLElement {
             });
         }
 
+        if(useLayer){
+            contentLayer = document.createElement("div");
+            contentLayer.setAttribute("class", "sc-layer");
+            contentLayer.style.cssText = `height:${this.height-100}px;widht:100%;overflow:auto;`;
+        }
+
         if (this._config.text) {
             // add content text
             let _text = document.createElement("p");
@@ -1143,7 +1155,11 @@ class SimpleCard extends HTMLElement {
                 _text.style.cssText = "margin-left: 2.8em;";
             }
             _text.innerHTML = this._config.text;
-            content.appendChild(_text);
+            if(useLayer && contentLayer){
+                contentLayer.append(_text);
+            }else{
+                content.appendChild(_text);
+            }
         }
 
         if (this.mode == "entities_card") {
@@ -1156,7 +1172,14 @@ class SimpleCard extends HTMLElement {
                     </tbody>
                 </table>
             `;
-            content.appendChild(datatable);
+            if(useLayer && contentLayer){
+                contentLayer.append(datatable);
+            }else{
+                content.appendChild(datatable);
+            }
+        }
+        if(useLayer && contentLayer){
+            content.appendChild(contentLayer);
         }
     }
 
@@ -1182,6 +1205,7 @@ class SimpleCard extends HTMLElement {
         this.card.appendChild(content);
         this.root.appendChild(this.card);
         this.setAttribute("title", "");
+        this.style.cssText = "height:100%;width:100%;display:grid";
     }
 
     /**
@@ -1225,7 +1249,6 @@ class SimpleCard extends HTMLElement {
             }
             // attribute datatable
             this.attibutesfilter = this._config.filter || null;
-            if (this.attibutesfilter) console.log(this.attibutesfilter);
             this.skipRender = false;
             this.entities = [];
             this.hassEntities = [];
