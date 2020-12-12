@@ -2,7 +2,7 @@
 
 const appinfo = {
     name: "✓ custom:simple-card",
-    version: "0.0.7",
+    version: "0.0.8",
     assets: "/hacsfiles/ha-simple-card/assets/"
 };
 console.info(
@@ -96,7 +96,9 @@ class SimpleCard extends HTMLElement {
      * hass
      */
     set hass(hass) {
+        // check if hass is present
         if (hass === undefined) return;
+        // skip not initialized
         if (!this._initialized) return;
 
         this._hass = hass;
@@ -111,7 +113,8 @@ class SimpleCard extends HTMLElement {
             }
         }
 
-        this.updateData();
+        if(this.skipRender)
+           this.updateData();
 
         if (this.skipRender) return;
 
@@ -121,12 +124,17 @@ class SimpleCard extends HTMLElement {
             if (this.mode === "buttons") {
                 for (let x of this._config.entities) {
                     if (this._hass.states[x.entity]) {
-                        let _entity = { ...this._hass.states[x.entity], ...x };
+                        let _entity = {
+                            ...this._hass.states[x.entity],
+                            ...x
+                        };
                         this.entities.push(_entity);
                     }
                 }
             }
-            if (!this.card) this.createCard();
+            if (!this.card) {
+                this.createCard();
+            }
         }
 
         this.skipRender = true;
@@ -253,7 +261,9 @@ class SimpleCard extends HTMLElement {
                 .map(
                     (attribute) => `
               <tr>
-                <td class="dt-name">${(attribute.icon)?'<ha-icon icon="' + attribute.icon + '" ></ha-icon>':''}${attribute.name}</td>
+                <td class="dt-name">${attribute.icon ? '<ha-icon icon="' + attribute.icon + '" ></ha-icon>' : ""}${
+                        attribute.name
+                    }</td>
                 <td class="dt-value">${localValue(attribute.value, this.locale)}${attribute.unit}</td>
               </tr>
             `
@@ -269,7 +279,7 @@ class SimpleCard extends HTMLElement {
     createCardContent(content) {
         if (!content) return;
 
-        const useLayer = this.height!='100%';
+        const useLayer = this.height != "100%";
         let contentLayer = null;
 
         if (this._config.title) {
@@ -312,10 +322,10 @@ class SimpleCard extends HTMLElement {
             });
         }
 
-        if(useLayer){
+        if (useLayer) {
             contentLayer = document.createElement("div");
             contentLayer.setAttribute("class", "sc-layer");
-            contentLayer.style.cssText = `height:${this.height-100}px;widht:100%;overflow:auto;`;
+            contentLayer.style.cssText = `height:${this.height - 100}px;widht:100%;overflow:auto;`;
         }
 
         if (this._config.text) {
@@ -326,9 +336,9 @@ class SimpleCard extends HTMLElement {
                 _text.style.cssText = "margin-left: 2.8em;";
             }
             _text.innerHTML = this._config.text;
-            if(useLayer && contentLayer){
+            if (useLayer && contentLayer) {
                 contentLayer.append(_text);
-            }else{
+            } else {
                 content.appendChild(_text);
             }
         }
@@ -343,13 +353,13 @@ class SimpleCard extends HTMLElement {
                     </tbody>
                 </table>
             `;
-            if(useLayer && contentLayer){
+            if (useLayer && contentLayer) {
                 contentLayer.append(datatable);
-            }else{
+            } else {
                 content.appendChild(datatable);
             }
         }
-        if(useLayer && contentLayer){
+        if (useLayer && contentLayer) {
             content.appendChild(contentLayer);
         }
     }
@@ -359,8 +369,8 @@ class SimpleCard extends HTMLElement {
      * @called for set hass
      */
     createCard() {
-        const eId = Math.random().toString(36).substr(2, 9);
-        this.id = "card-" + eId;
+        //const eId = Math.random().toString(36).substr(2, 9);
+        // this.id = "card-" + eId;
         this.card = document.createElement("ha-card");
         this.card.setAttribute("class", "ha-simplecard");
         if (this.mode == "buttons") {
@@ -370,7 +380,7 @@ class SimpleCard extends HTMLElement {
         }
         this.addCss();
         const content = document.createElement("div");
-        content.id = "content-" + eId;
+        content.id = this.id + '-content';
         content.style.height = content.style.minHeight = this.height + "px";
         this.createCardContent(content);
         this.card.appendChild(content);
@@ -403,9 +413,8 @@ class SimpleCard extends HTMLElement {
         this.root = this.shadowRoot;
         if (this.root.lastChild) this.root.removeChild(root.lastChild);
         if (!this._config) {
-            // this._config = Object.assign({}, config);
-            this._config = config;
-            this.id = Math.random().toString(36).substr(2, 9);
+            this._config = Object.assign({}, config);
+            this.id = "SC" + Math.floor(Math.random() * 1000);
             const _browserlocale = navigator.language || navigator.userLanguage || "en-GB";
             this.locale = config.locale || _browserlocale;
             this._checkLocale();
@@ -426,6 +435,33 @@ class SimpleCard extends HTMLElement {
             this.loginfo_enabled = true;
             this._initialized = true;
         }
+    }
+
+    /**
+     * The connectedCallback() runs when the element is added to the DOM
+     */
+    connectedCallback() {
+        this._initialized = true;
+    }
+
+    /**
+     * the disconnectedCallback() and adoptedCallback() callbacks log simple messages
+     * to the console to inform us when the element is either removed from the DOM,
+     */
+    disconnectedCallback() {
+        this._initialized = false;
+    }
+
+    /**
+     * the disconnectedCallback() and adoptedCallback() callbacks log simple messages
+     * to the console to inform us when the element is either removed from the DOM,
+     */
+    adoptedCallback() {
+        //  logInfo(true, this.id, this.chart_type, "adoptedCallback");
+    }
+
+    attributeChangedCallback(name, oldValue, newValue) {
+        //  logInfo(true, this.id, this.chart_type, "attributeChangedCallback");
     }
 
     /**
