@@ -827,6 +827,13 @@ function deepMerge(...sources) {
     return acc;
 }
 
+/** --------------------------------------------------------------------
+
+  Custom Simple Card 
+  credits to :
+
+/** -------------------------------------------------------------------*/
+
 "use strict";
 
 const appinfo = {
@@ -942,8 +949,8 @@ class SimpleCard extends HTMLElement {
             }
         }
 
-        if(this.skipRender)
-           this.updateData();
+        if (this.skipRender)
+            this.updateData();
 
         if (this.skipRender) return;
 
@@ -1075,7 +1082,6 @@ class SimpleCard extends HTMLElement {
          }
         `;
         this.root.append(_style);
-        return true;
     }
 
     /**
@@ -1215,7 +1221,7 @@ class SimpleCard extends HTMLElement {
         this.card.appendChild(content);
         this.root.appendChild(this.card);
         this.setAttribute("title", "");
-        this.style.cssText = "height:100%;width:100%;display:grid";
+        this.style.cssText = "height:100%;width:100%;";
     }
 
     /**
@@ -1274,23 +1280,10 @@ class SimpleCard extends HTMLElement {
     }
 
     /**
-     * the disconnectedCallback() and adoptedCallback() callbacks log simple messages
-     * to the console to inform us when the element is either removed from the DOM,
+     * the disconnectedCallback() runs when the element is either removed from the DOM.
      */
     disconnectedCallback() {
         this._initialized = false;
-    }
-
-    /**
-     * the disconnectedCallback() and adoptedCallback() callbacks log simple messages
-     * to the console to inform us when the element is either removed from the DOM,
-     */
-    adoptedCallback() {
-        //  logInfo(true, this.id, this.chart_type, "adoptedCallback");
-    }
-
-    attributeChangedCallback(name, oldValue, newValue) {
-        //  logInfo(true, this.id, this.chart_type, "attributeChangedCallback");
     }
 
     /**
