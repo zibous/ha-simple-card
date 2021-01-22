@@ -13,7 +13,7 @@ views:
             <li>Buttons</>
           </ul>
         width: 80%
-        cards:
+        rows:
           - row:
               - col: null
                 width: 100%
@@ -29,7 +29,7 @@ views:
                       - entity: sensor.orangenbaum_temperature
                       - entity: sensor.orangenbaum_conductivity
                       - entity: sensor.gas_verbrauch_m3
-                      - entity: sensor.temperatur_indoor
+                      - entity: sensor.temperatur_indoo
           - row:
               - col: null
                 width: 50%
@@ -60,50 +60,143 @@ views:
                       Hello, {{user}} 
                       markdown card sample
                   - type: 'custom:chart-card'
-                    title: 'PIE - custom:chart-card'
-                    icon: 'mdi:nutrition'
-                    height: 220
-                    maxwidth: 420
+                    title: Makro Nährstoffe
+                    icon: 'mdi:chart-pie'
+                    height: 240
                     chart: pie
+                    units: kal
+                    cardtimestamp: true
                     theme:
-                      cardbackground: 'linear-gradient(to bottom, #e6dada, #274046);'
+                      cardbackground: |
+                        linear-gradient(to bottom, #40e0d0, #ff8c00, #ff0080);
                     options:
-                      title:
-                        display: true
-                        text: Orangenbaum
+                      plugins:
+                        title:
+                          display: true
+                          text: Aufteilung Nährstoffe (kal) pro Tag
+                          color: '#ff9500'
                     entities:
-                      - entity: sensor.orangenbaum_moisture
-                      - entity: sensor.orangenbaum_temperature
-                      - entity: sensor.orangenbaum_conductivity
+                      - entity: sensor.eiweis_makronahrstoff
+                        name: Eiweis
+                      - entity: sensor.fett_makronahrstoff
+                        name: Fett
+                      - entity: sensor.kohlenhydrate_makronahrstoff
+                        name: Kohlenhydrate
                   - type: 'custom:chart-card'
-                    style: |
-                      background: linear-gradient(to bottom, #009fff, #ec2f4b);
-                    title: 'BAR - custom:chart-card'
-                    icon: 'mdi:nutrition'
-                    height: 220
-                    maxwidth: 420
+                    title: Makro Nährstoffe
+                    icon: 'mdi:chart-bar'
+                    height: 240
                     chart: bar
+                    units: kal
+                    cardtimestamp: true
+                    theme:
+                      cardbackground: |
+                        linear-gradient(to bottom, #e1eec3,#f05053);
+                    show:
+                      segmented: true
                     options:
-                      title:
-                        display: true
-                        text: Orangenbaum
+                      plugins:
+                        title:
+                          display: true
+                          text: Aufteilung Nährstoffe (kal) pro Tag
+                        legend:
+                          display: false
                     entities:
-                      - entity: sensor.orangenbaum_battery
-                      - entity: sensor.orangenbaum_moisture
-                      - entity: sensor.orangenbaum_temperature
-                      - entity: sensor.orangenbaum_conductivity
+                      - entity: sensor.eiweis_makronahrstoff
+                        name: Eiweis
+                        backgroundColor: '#f1c40f'
+                        units: kal
+                      - entity: sensor.fett_makronahrstoff
+                        name: Fett
+                        backgroundColor: '#e74c3c'
+                        units: kal
+                      - entity: sensor.kohlenhydrate_makronahrstoff
+                        name: Kohlenhydrate
+                        backgroundColor: '#009688'
+                        units: kal
                   - type: 'custom:chart-card'
-                    style: |
-                      background: linear-gradient(to bottom, #009fff, #ec2f4b);
-                    title: 'LINE custom:chart-card'
-                    icon: 'mdi:nutrition'
-                    height: 220
-                    maxwidth: 420
-                    chart: line
+                    title: Makro Nährstoffe
+                    icon: 'mdi:radar'
+                    height: 240
+                    chart: radar
+                    units: kal
+                    cardtimestamp: true
+                    theme:
+                      cardbackground: |
+                        linear-gradient(to bottom, #e1eec3,#f05053);
                     options:
-                      title:
-                        display: true
-                        text: Gasverbrauch
+                      scale:
+                        gridLines:
+                          color:
+                            - '#03a9f4'
+                            - '#00bcd4'
+                            - '#8bc34a'
+                            - '#e51400'
+                            - '#cddc39'
+                            - '#ff9800'
+                            - '#ff5722'
+                        angleLines:
+                          color: '#5ac8fa'
+                    entities:
+                      - entity: sensor.eiweis_makronahrstoff
+                        name: Eiweis
+                        units: kal
+                      - entity: sensor.fett_makronahrstoff
+                        name: Fett
+                        units: kal
+                      - entity: sensor.kohlenhydrate_makronahrstoff
+                        name: Kohlenhydrate
+                        units: kal
+                  - type: 'custom:chart-card'
+                    title: Körperwerte
+                    icon: 'mdi:poll-box-outline'
+                    height: 240
+                    chart: polarArea
+                    cardtimestamp: true
+                    options:
+                      plugins:
+                        title:
+                          text: Aktuelle Werte
+                      scale:
+                        gridLines:
+                          color:
+                            - '#03a9f4'
+                            - '#00bcd4'
+                            - '#8bc34a'
+                            - '#e51400'
+                            - '#cddc39'
+                            - '#ff9800'
+                            - '#ff5722'
+                        angleLines:
+                          color: '#5ac8fa'
+                    entities:
+                      - entity: sensor.koperfett
+                        name: Fett
+                      - entity: sensor.korperwasser
+                        name: Wasser
+                      - entity: sensor.muskeln
+                        name: Muskeln
+                      - entity: sensor.fettfreie_korpermasse
+                        name: Fettfreie Masse
+                      - entity: sensor.gewicht
+                        name: Gewicht
+                      - entity: sensor.viszerales_fett
+                        name: Viszerales Fett
+                  - type: 'custom:chart-card'
+                    title: 'LINE custom:chart-card'
+                    icon: 'mdi:chart-line'
+                    height: 240
+                    chart: line
+                    cardtimestamp: true
+                    ignoreZero: true
+                    theme:
+                      cardbackground: |
+                        linear-gradient(to bottom, #40e0d0, #ff8c00,#ff0080);
+                    options:
+                      plugins:
+                        title:
+                          display: true
+                          text: Gasverbrauch
                       layout:
                         padding:
                           left: 50
@@ -114,15 +207,21 @@ views:
                       - entity: sensor.gas_verbrauch_m3
                   - type: 'custom:chart-card'
                     title: 'LINE2 custom:chart-card'
-                    icon: 'mdi:chart-box'
-                    height: 220
-                    maxwidth: 420
+                    icon: 'mdi:chart-bell-curve-cumulative'
+                    height: 240
                     chart: line
                     loader: three-dots
+                    cardtimestamp: true
+                    theme:
+                      cardbackground: |
+                        linear-gradient(to bottom, #e1eec3, #f05053)
                     options:
-                      title:
-                        display: true
-                        text: Innnenraum
+                      plugins:
+                        title:
+                          display: true
+                          text: Innnenraum
+                        legend:
+                          display: false
                       layout:
                         padding:
                           left: 50
@@ -144,8 +243,8 @@ views:
                         y_axis: secondary
           - row:
               - col: null
-                width: 160
-                height: 160
+                width: 240
+                height: 240
                 entities:
                   - type: sensor
                     graph: line
@@ -157,26 +256,29 @@ views:
                     entity: sensor.orangenbaum_temperature
           - row:
               - col: null
-                width: 280
-                height: 240
+                width: 320
+                height: 420
                 entities:
                   - type: light
                     entity: light.fitnessraum_licht
+                    style: |
+                      overflow:hidden;
+                      transform: scale(98%);
                   - type: thermostat
                     entity: climate.zentralheizung
                     style: |
-                      max-height: 240px
+                      overflow:hidden;
+                      transform: scale(98%);
                   - type: alarm-panel
                     name: House Alarm
                     entity: alarm_control_panel.home_alarm
                     style: |
-                      max-height: 240px;
                       overflow:hidden;
+                      transform: scale(95%);
                   - type: 'custom:simple-card'
                     title: Wetterdaten
                     icon: 'mdi:weather-cloudy'
                     mode: entities_card
-                    entity: weather.home
                     filter:
                       include:
                         - key: weather.home.temperature
@@ -187,6 +289,14 @@ views:
                           name: Feuchtigkeit
                           icon: 'mdi:water'
                           unit: '%'
+                  - type: 'custom:simple-card'
+                    title: Wetterdaten
+                    height: 360
+                    icon: 'mdi:weather-cloudy'
+                    mode: entities_card
+                    filter:
+                      include:
+                        - weather.home.*
           - row:
               - col: null
                 entities:
@@ -198,6 +308,9 @@ views:
                       - entity: person.admin
                         name: Peter
                         image: /local/images/peter.jpg
+                      - entity: person.admin
+                        name: Peter
+                        photo: /local/images/peter.jpg  
                       - entity: sensor.gas_verbrauch_m3
                         name: Gas
                       - entity: sensor.kohlenhydrate_makronahrstoff

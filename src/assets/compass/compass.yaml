@@ -1,0 +1,22 @@
+type: picture-entity
+show_name: false
+show_state: false
+entity: sensor.bom_station_wind_direction
+state_image:
+  CALM: /local/icons/wind/calm.png
+  E: /local/icons/wind/e.png
+  ENE: /local/icons/wind/ene.png
+  ESE: /local/icons/wind/ese.png
+  'N': /local/icons/wind/n.png
+  NE: /local/icons/wind/ne.png
+  NNE: /local/icons/wind/nne.png
+  NNW: /local/icons/wind/nnw.png
+  NW: /local/icons/wind/nw.png
+  S: /local/icons/wind/s.png
+  SE: /local/icons/wind/se.png
+  SSE: /local/icons/wind/sse.png
+  SSW: /local/icons/wind/ssw.png
+  SW: /local/icons/wind/sw.png
+  W: /local/icons/wind/w.png
+  WNW: /local/icons/wind/ww.png
+  WSW: /local/icons/wind/wsw.png

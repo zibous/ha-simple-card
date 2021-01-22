@@ -1,7 +1,7 @@
 # Homeassitant Simple Card
 
 
-> DEVELOPER PREVIEW VERSION `v0.0.7` NOT FINAL
+> DEVELOPER PREVIEW VERSION `v0.0.9` NOT FINAL
 > I'm still looking for help and would be happy if someone would get in touch to help me complete and improve the cards-layout.
 
 ![ha-simple-card.png](docs/ha-simple-card.png)

@@ -1,7 +1,7 @@
 /** --------------------------------------------------------------------
 
   Custom Simple Card 
-  credits to :
+  credits to : https://github.com/DBuit/
 
 /** -------------------------------------------------------------------*/
 
@@ -9,7 +9,7 @@
 
 const appinfo = {
     name: "✓ custom:simple-card",
-    version: "0.0.8",
+    version: "0.0.9",
     assets: "/hacsfiles/ha-simple-card/assets/"
 };
 console.info(
@@ -201,7 +201,7 @@ class SimpleCard extends HTMLElement {
             font-weight: 500;
             padding-top: 1em;
             padding-left: 6px;
-            width: 95%;
+            width: 90%;
             overflow:hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
@@ -392,7 +392,7 @@ class SimpleCard extends HTMLElement {
         this.card.appendChild(content);
         this.root.appendChild(this.card);
         this.setAttribute("title", "");
-        this.style.cssText = "height:100%;width:100%;";
+        //this.style.cssText = "height:100%;width:100%;";
     }
 
     /**

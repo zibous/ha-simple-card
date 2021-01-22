@@ -36,7 +36,7 @@ class buttons {
         if (!this.button_layer) return false;
         const _style = document.createElement("style");
         _style.textContent = `
-            div.sc-buttons{
+            .sc-buttons{
                 position:relative;
                 margin-left: 0.5em;
                 width:100%;
@@ -46,7 +46,7 @@ class buttons {
                 content: " ";
                 display: table;
             }
-            div.sc-button{
+            .sc-button{
                 vertical-align: top;
                 display:inline-block;
                 width: var(--tile-width, 110px);
@@ -55,7 +55,6 @@ class buttons {
                 background-color: var(--tile-background, rgba(255, 255, 255, 1));
                 border-radius: var(--tile-border-radius, 12px);
                 box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.15);
-                box-shadow1: var(--ha-card-box-shadow, 5px 5px 8px rgba(0, 0, 0, 0.14), -5px -5px 8px rgba(0, 0, 0, 0.12));
                 margin: 0.5em;
                 position: relative;
                 overflow:hidden;
@@ -64,18 +63,27 @@ class buttons {
                 color: var(--tile-on-name-text-color, rgba(0, 0, 0, 1));
                 touch-action: auto!important;
             }
-            div.sc-button.off {
+            .sc-button.image::before{
+                content: "";
+                position: absolute;
+                top: 0px;
+                right: 0px;
+                bottom: 0px;
+                left: 0px;
+                background-color: rgba(0,0,0,0.35);
+            }
+            .sc-button.off {
                 filter: brightness(0.7) !important;
                 color: var(--tile-on-name-text-color, rgba(0, 0, 0, 0.40)) !important;
             }
-            div.sc-button-data{
+            .sc-button-data{
                 position: absolute;
                 left: 0;
                 bottom: 8px;
                 width: 100%;
                 background: transparent;
             }
-            div.sc-digitbutton-data{
+            .sc-digitbutton-data{
                 position: absolute;
                 left: 0;
                 bottom: 0;
@@ -84,7 +92,7 @@ class buttons {
                 background: transparent;
                 color: var(--tile-on-name-text-color, rgba(0, 0, 0, 0.60)) !important;
             }
-            div.sc-button-name, div.sc-digitbutton-name{
+            .sc-button-name, .sc-digitbutton-name{
                 margin: 0 8px;
                 font-weight: 400;
                 width: 90%;
@@ -93,7 +101,7 @@ class buttons {
                 white-space: nowrap;
                 color: var(--tile-on-name-text-color, rgba(0, 0, 0, 0.60));
             }
-            div.sc-button-value, div.sc-digitbutton-value{
+            .sc-button-value, .sc-digitbutton-value{
                 margin: 0 8px;  
                 width: 85%;
                 font-weight: 500;
@@ -102,14 +110,14 @@ class buttons {
                 text-overflow: ellipsis;
                 white-space: nowrap;
             }
-            div.sc-digitbutton-value{
+            .sc-digitbutton-value{
                 font-weight: 400;
                 text-align:center;
                 vertical-align:top;
                 font-size: 2.2em;
                 line-height:2.3em;
             }
-            div.sc-digitbutton-value span{
+            .sc-digitbutton-value span{
                 font-size: 0.45em;
                 vertical-align: top;
                 display: inline-block;
@@ -117,12 +125,12 @@ class buttons {
                 top: -7px;
                 left: 4px;
             }
-            div.sc-digitbutton-name{
+            .sc-digitbutton-name{
                 position:relative;
                 bottom:8px;
                 font-size: 0.8em;
             }
-            div.sc-button-date{
+            .sc-button-date{
                 margin: 0 8px;  
                 text-align: right;
                 width: 85%;
@@ -141,7 +149,7 @@ class buttons {
                 height: 40px;
                 cursor: pointer;
             }
-            div.sc-button .icon {
+            .sc-button .icon {
                 display:block;
                 height: calc(var(--tile-icon-size, 30px) + 10px);
                 width: calc(var(--tile-icon-size, 30px) + 10px);
@@ -156,34 +164,73 @@ class buttons {
                 top: 8px;
                 left:8px;
             }
-            div.sc-button .icon.on {
+            .sc-button .icon.center{
+                position: absolute;
+                left:25px;
+                top: 20px;
+                --mdc-icon-size: var(--tile-icon-size, 80px);
+            }
+            .sc-button .icon.on {
                 color: var(--tile-on-icon-color, #f7d959);
             }
-            div.sc-button .icon.off {
+            .sc-button .icon.off {
                 color: var(--tile-icon-color, rgba(0, 0, 0, 0.3));
             }
-            div.sc-button .icon.image{
+            .sc-button .icon.image{
                 position: relative;
                 top: 0;
                 left: 0;
                 width: 42px;
                 border-radius: var(--tile-image-radius, 100%);
             }
-            div.sc-button .icon ha-icon {
+            .sc-button .icon ha-icon {
                 width:30px;
                 height:30px;
                 pointer-events: none;
             }
+            .sc-imagebutton{
+                top:0;
+                left:0;
+                position:absolute;
+                height: 100%;
+                width:100%;
+                font-weight:500;
+                text-shadow: 0px 4px 3px rgba(0,0,0,0.4), 0px 8px 13px rgba(0,0,0,0.1),0px 18px 23px rgba(0,0,0,0.1);
+                z-index:10;
+                color: #FFFFFF;
+            }
+            .sc-imagebutton-value, .sc-iconbutton-value{
+                position:absolute;
+                right: 1em;
+                top: 0.3em;
+            }
+            .sc-imagebutton-name, .sc-iconbutton-name{
+                position:absolute;
+                bottom: 0.3em;
+                left: 1em;
+                width:80%;
+                overflow:hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+            .sc-iconbutton{
+                top:0;
+                left:0;
+                position:absolute;
+                height: 100%;
+                width:100%;
+                font-weight:500;
+            }
             @media (min-width: 481px) and (max-width: 767px) {
-                div.sc-button{
-                    transform: scale(0.90);
+                .sc-button{
+                    transform: scale(0.95);
                     margin: -0.3em;
                 }
             }
             @media (min-width: 320px) and (max-width: 480px){
-                div.sc-button{
-                    transform: scale(0.70);
-                    margin: -1.10em;
+                .sc-button{
+                    transform: scale(0.80);
+                    margin: -0.6em;
                 }
             }
         `;
@@ -268,6 +315,55 @@ class buttons {
     }
 
     /**
+     * render a image button
+     * button with background image, state and name
+     * width: var(--tile-width, 110px);
+     * height: var(--tile-height, 110px);
+     * @param {*} _button
+     * @param {*} button_data
+     */
+    renderImageButton(_button, button_data) {
+        this._checkButtonState(_button, button_data);
+        let html = [];
+        if (button_data.image) {
+            // add background image, state and name
+            _button.style.cssText =
+                _button.style.cssText +
+                `background-image: url('${button_data.image}'); no-repeat center center fixed;background-size: cover;`;
+            html.push(
+                `<div class="sc-imagebutton"> 
+                 <div id="${button_data.id}V" class="sc-imagebutton-value">${button_data.value}</div>
+                 <div class="sc-imagebutton-name">${button_data.name.toUpperCase()}</div>
+               </div>`
+            );
+            _button.innerHTML = html.join("");
+        }
+    }
+
+    /**
+     * render a icon button
+     * button with icon, state and name
+     * @param {*} _button
+     * @param {*} button_data
+     */
+    renderIconButton(_button, button_data) {
+        this._checkButtonState(_button, button_data);
+        let html = [];
+        if (button_data.icon) {
+            html.push(
+                `<div class="sc-iconbutton"> 
+                 <div id="${button_data.id}V" class="sc-iconbutton-value">${button_data.value}</div>
+                 <ha-icon id="${button_data.id}I" class="icon center ${this.buttonstate.status}" icon="${
+                    button_data.icon
+                }"></ha-icon>
+                 <div class="sc-iconbutton-name">${button_data.name.toUpperCase()}</div>
+               </div>`
+            );
+            _button.innerHTML = html.join("");
+        }
+    }
+
+    /**
      * render digit button content
      * @param {*} _button
      * @param {*} button_data
@@ -331,7 +427,7 @@ class buttons {
     tranlate(key, value) {
         // const key = "state." + _entityName + "." + entity.state
         // this.hass.resources[this.hass.language]["state.person.home"]
-        console.log(key)
+        console.log(key);
         const lang = this.hass.selectedLanguage || this.hass.language;
         const resources = this.hass.resources[lang] || "de";
         return resources && resources[key] ? resources[key] : value;
@@ -339,6 +435,7 @@ class buttons {
 
     /**
      * get Button data
+     * width: calc((var(--tile-width, 100px) * 2) + (10px * 2) + (10px * 1) - 1px);
      * @param {*} entity
      */
     getButtonData(entity) {
@@ -364,7 +461,8 @@ class buttons {
             brightness: h && h.attributes ? h.attributes.brightness : null,
             rgb_color: h && h.attributes ? h.attributes.rgb_color : null,
             xy_color: h && h.attributes ? h.attributes.xy_color : null,
-            image: entity.image || null
+            image: entity.image || null,
+            style: entity.style || ""
         };
     }
 
@@ -430,6 +528,12 @@ class buttons {
                     case "digitbutton":
                         this.renderDigitButton(_button, button_data);
                         break;
+                    case "imagebutton":
+                        this.renderImageButton(_button, button_data);
+                        break;
+                    case "iconbutton":
+                        this.renderIconButton(_button, button_data);
+                        break;
                     default:
                         this.renderDefaultButton(_button, button_data);
                 }
@@ -450,6 +554,9 @@ class buttons {
                 const _button = document.createElement("div");
                 _button.setAttribute("class", "sc-button buttons on");
                 _button.id = entity.entity_id;
+                if (button_data.style) {
+                    _button.style.cssText = _button.style.cssText + button_data.style;
+                }
                 if (entity.style) {
                     _button.style.cssText = entity.style.replaceAll("\n", "");
                 }
@@ -460,6 +567,13 @@ class buttons {
                 switch (entity.type) {
                     case "digitbutton":
                         this.renderDigitButton(_button, button_data);
+                        break;
+                    case "imagebutton":
+                        _button.setAttribute("class", "sc-button image buttons on");
+                        this.renderImageButton(_button, button_data);
+                        break;
+                    case "iconbutton":
+                        this.renderIconButton(_button, button_data);
                         break;
                     default:
                         this.renderDefaultButton(_button, button_data);
