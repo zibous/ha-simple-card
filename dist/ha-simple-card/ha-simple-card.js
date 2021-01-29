@@ -3,7 +3,7 @@
  * https://github.com/zibous/ha-simple-card
  * 
  * License: MIT
- * Generated on 2020
+ * Generated on 2021
  * Author: Peter siebler
  */
 
@@ -978,20 +978,27 @@ function deepMerge(...sources) {
   credits to : https://github.com/DBuit/
 
 /** -------------------------------------------------------------------*/
-
 "use strict";
 
+// all about the application
 const appinfo = {
     name: "✓ custom:simple-card",
+    app: "simple-card",
     version: "0.0.9",
-    assets: "/hacsfiles/ha-simple-card/assets/"
+    assets: "/hacsfiles/ha-simple-card/assets/",
+    github: "https://github.com/zibous/ha-simple-card"
 };
+
+// render the app-info for this custom card
 console.info(
     "%c " + appinfo.name + "     %c ▪︎▪︎▪︎▪︎ Version: " + appinfo.version + " ▪︎▪︎▪︎▪︎ ",
     "color:#FFFFFF; background:#3498db;display:inline-block;font-size:12px;font-weight:200;padding: 4px 0 4px 0",
     "color:#2c3e50; background:#ecf0f1;display:inline-block;font-size:12px;font-weight:200;padding: 4px 0 4px 0"
 );
 
+/**
+ * lovelace card simple card
+ */
 class SimpleCard extends HTMLElement {
     /**
      * constructor
@@ -1022,6 +1029,70 @@ class SimpleCard extends HTMLElement {
         this.hassEntities = this.entities
             .map((x) => this._hass.states[x.entity])
             .filter((notUndefined) => notUndefined !== undefined);
+    }
+
+    /**
+     * filter entities from this._hass.states
+     * @call: getEntitiesByfilter(this._hass.states,this.config_filter)
+     *
+     *  filter:
+     *     - sensor.orangenbaum*
+     *     - sensor.energie*
+     * @param {*} list
+     * @param {*} filters
+     */
+    getEntitiesByfilter(list, filters) {
+        function _filterName(stateObj, pattern) {
+            let parts;
+            let attr_id;
+            let attribute;
+            if (typeof pattern === "object") {
+                parts = pattern["key"].split(".");
+                attribute = pattern["key"];
+            } else {
+                parts = pattern.split(".");
+                attribute = pattern;
+            }
+            const regEx = new RegExp(`^${attribute.replace(/\*/g, ".*")}$`, "i");
+            return stateObj.search(regEx) === 0;
+        }
+        let entities = [];
+        filters.forEach((filter) => {
+            const filters = [];
+            filters.push((stateObj) => _filterName(stateObj, filter));
+            Object.keys(list)
+                .sort()
+                .forEach((key) => {
+                    Object.keys(list[key]).sort();
+                    if (filters.every((filterFunc) => filterFunc(`${key}`))) {
+                        entities.push(list[key]);
+                    }
+                });
+        });
+        return entities;
+    }
+    /**
+     * get the entities
+     */
+    getEntities() {
+        return this._config.entities;
+    }
+
+    /**
+     * get attribute for the selected entity
+     * @param {*} entityId
+     * @param {*} attr
+     * @param {*} sub_attribute
+     */
+    _getAttribute(entityId, attr, sub_attribute) {
+        if (this.hass && this.hass.states[entityId]) {
+            let _state = this.hass.states[entityId].attributes[attr];
+            if (subattr) {
+                _state = this.hass.states[entityId].attributes[attr][sub_attribute];
+            }
+            return _state;
+        }
+        return null;
     }
 
     /**
@@ -1094,8 +1165,7 @@ class SimpleCard extends HTMLElement {
             }
         }
 
-        if (this.skipRender)
-            this.updateData();
+        if (this.skipRender) this.updateData();
 
         if (this.skipRender) return;
 
@@ -1103,13 +1173,16 @@ class SimpleCard extends HTMLElement {
             this.init = true;
             this.entities = [];
             if (this.mode === "buttons") {
-                for (let x of this._config.entities) {
-                    if (this._hass.states[x.entity]) {
-                        let _entity = {
-                            ...this._hass.states[x.entity],
-                            ...x
-                        };
-                        this.entities.push(_entity);
+                const _entities = this.getEntities();
+                if (_entities && _entities.length) {
+                    for (let x of _entities) {
+                        if (this._hass.states[x.entity]) {
+                            let _entity = {
+                                ...this._hass.states[x.entity],
+                                ...x
+                            };
+                            this.entities.push(_entity);
+                        }
                     }
                 }
             }
@@ -1360,7 +1433,7 @@ class SimpleCard extends HTMLElement {
         }
         this.addCss();
         const content = document.createElement("div");
-        content.id = this.id + '-content';
+        content.id = this.id + "-content";
         content.style.height = content.style.minHeight = this.height + "px";
         this.createCardContent(content);
         this.card.appendChild(content);
@@ -1398,7 +1471,6 @@ class SimpleCard extends HTMLElement {
             const _browserlocale = navigator.language || navigator.userLanguage || "en-GB";
             this.locale = config.locale || _browserlocale;
             this._checkLocale();
-            this.entities = [];
             this.logenabled = config.logger || true;
             this.height = this._config.height || "100%";
             this.title = this._config.title;
