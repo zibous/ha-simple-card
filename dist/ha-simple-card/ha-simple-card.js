@@ -25,25 +25,25 @@ class buttons {
      * @param {*} config
      */
     constructor(config) {
-        this.shadowRoot = config.shadowRoot;
-        this.parentNode = config.parentNode;
-        this.hass = config.hass;
-        this.entities = config.entities;
-        this.hassEntities = config.hassEntities;
-        this.locale = config.locale;
-        this.buttonstate = {};
-        this.buttonslist = [];
-        this.button_layer = null;
-        this.update = false;
-        this.intialized = false;
-        this.render();
+        this.shadowRoot = config.shadowRoot
+        this.parentNode = config.parentNode
+        this.hass = config.hass
+        this.entities = config.entities
+        this.hassEntities = config.hassEntities
+        this.locale = config.locale
+        this.buttonstate = {}
+        this.buttonslist = []
+        this.button_layer = null
+        this.update = false
+        this.intialized = false
+        this.render()
     }
     /**
      * set the styles for the buttons
      */
     set_buttonstyle() {
-        if (!this.button_layer) return false;
-        const _style = document.createElement("style");
+        if (!this.button_layer) return false
+        const _style = document.createElement("style")
         _style.textContent = `
             .sc-buttons{
                 position:relative;
@@ -242,9 +242,9 @@ class buttons {
                     margin: -0.6em;
                 }
             }
-        `;
-        this.parentNode.append(_style);
-        return true;
+        `
+        this.parentNode.append(_style)
+        return true
     }
 
     /**
@@ -253,21 +253,21 @@ class buttons {
      * @param {*} lastUpdated
      */
     _calculateTime(lastUpdated) {
-        const currentDate = new Date();
-        const lastDate = new Date(lastUpdated);
-        const diffMs = currentDate.getTime() - lastDate.getTime();
-        const diffDays = Math.floor(diffMs / 86400000); // days
-        const diffHrs = Math.floor((diffMs % 86400000) / 3600000); // hours
-        const diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000); // minutes
-        const diffSecs = Math.round((((diffMs % 86400000) % 3600000) % 60000) / 1000);
+        const currentDate = new Date()
+        const lastDate = new Date(lastUpdated)
+        const diffMs = currentDate.getTime() - lastDate.getTime()
+        const diffDays = Math.floor(diffMs / 86400000) // days
+        const diffHrs = Math.floor((diffMs % 86400000) / 3600000) // hours
+        const diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000) // minutes
+        const diffSecs = Math.round((((diffMs % 86400000) % 3600000) % 60000) / 1000)
         if (diffDays > 0) {
-            return diffDays + " d";
+            return diffDays + " d"
         } else if (diffHrs > 0) {
-            return diffHrs + " h";
+            return diffHrs + " h"
         } else if (diffMins > 0) {
-            return diffMins + " m";
+            return diffMins + " m"
         } else {
-            return diffSecs + " s";
+            return diffSecs + " s"
         }
     }
     /**
@@ -278,11 +278,11 @@ class buttons {
     _checkButtonState(_button, button_data) {
         this.buttonstate = {
             status: ["off", "unavailable"].includes(button_data.value) ? "off" : "on"
-        };
+        }
         if (this.buttonstate.status === "off") {
-            _button.classList.add("off");
+            _button.classList.add("off")
         } else {
-            _button.classList.remove("off");
+            _button.classList.remove("off")
         }
     }
 
@@ -320,7 +320,7 @@ class buttons {
                     }
                 </text>
             </svg>
-        `;
+        `
     }
 
     /**
@@ -332,20 +332,20 @@ class buttons {
      * @param {*} button_data
      */
     renderImageButton(_button, button_data) {
-        this._checkButtonState(_button, button_data);
-        let html = [];
+        this._checkButtonState(_button, button_data)
+        let html = []
         if (button_data.image) {
             // add background image, state and name
             _button.style.cssText =
                 _button.style.cssText +
-                `background-image: url('${button_data.image}'); no-repeat center center fixed;background-size: cover;`;
+                `background-image: url('${button_data.image}'); no-repeat center center fixed;background-size: cover;`
             html.push(
                 `<div class="sc-imagebutton"> 
                  <div id="${button_data.id}V" class="sc-imagebutton-value">${button_data.value}</div>
                  <div class="sc-imagebutton-name">${button_data.name.toUpperCase()}</div>
                </div>`
-            );
-            _button.innerHTML = html.join("");
+            )
+            _button.innerHTML = html.join("")
         }
     }
 
@@ -356,8 +356,8 @@ class buttons {
      * @param {*} button_data
      */
     renderIconButton(_button, button_data) {
-        this._checkButtonState(_button, button_data);
-        let html = [];
+        this._checkButtonState(_button, button_data)
+        let html = []
         if (button_data.icon) {
             html.push(
                 `<div class="sc-iconbutton"> 
@@ -367,8 +367,8 @@ class buttons {
                 }"></ha-icon>
                  <div class="sc-iconbutton-name">${button_data.name.toUpperCase()}</div>
                </div>`
-            );
-            _button.innerHTML = html.join("");
+            )
+            _button.innerHTML = html.join("")
         }
     }
 
@@ -378,24 +378,24 @@ class buttons {
      * @param {*} button_data
      */
     renderDigitButton(_button, button_data) {
-        this._checkButtonState(_button, button_data);
-        let html = [];
+        this._checkButtonState(_button, button_data)
+        let html = []
         if (button_data.image) {
-            html.push(`<img class="icon image" src="${button_data.image}" alt="" />`);
+            html.push(`<img class="icon image" src="${button_data.image}" alt="" />`)
         } else {
             html.push(
                 `<ha-icon id="${button_data.id}I" class="icon ${this.buttonstate.status}" icon="${button_data.icon}"></ha-icon>`
-            );
+            )
         }
-        html.push(`${this.renderCircleState(button_data)}`);
+        html.push(`${this.renderCircleState(button_data)}`)
         html.push(`<div class="sc-digitbutton-data">  
                     <div id="${button_data.id}V" class="sc-digitbutton-value">${button_data.value}
                         <span>${button_data.unit}<span>
                     </div>
                     <div class="sc-digitbutton-name">${button_data.name.toUpperCase()}</div>
                    </div>
-        `);
-        _button.innerHTML = html.join("");
+        `)
+        _button.innerHTML = html.join("")
     }
 
     /**
@@ -407,24 +407,24 @@ class buttons {
      * @called renderbuttons, updatebuttons
      */
     renderDefaultButton(_button, button_data) {
-        this._checkButtonState(_button, button_data);
-        let html = [];
+        this._checkButtonState(_button, button_data)
+        let html = []
         if (button_data.image) {
-            html.push(`<img class="icon image img" src="${button_data.image}" alt="" />`);
+            html.push(`<img class="icon image img" src="${button_data.image}" alt="" />`)
         } else {
             html.push(
                 `<ha-icon id="${button_data.id}I" class="icon ${this.buttonstate.status}" icon="${button_data.icon}"></ha-icon>`
-            );
+            )
         }
-        html.push(`${this.renderCircleState(button_data)}`);
+        html.push(`${this.renderCircleState(button_data)}`)
         html.push(`
           <div class="sc-button-data">  
           <div class="sc-button-name">${button_data.name.toUpperCase()}</div>
           <div id="${button_data.id}V" class="sc-button-value">${button_data.value} ${button_data.unit}</div>
           <div id="${button_data.id}D" class="sc-button-date">${button_data.date}</div>
           </div>
-        `);
-        _button.innerHTML = html.join("");
+        `)
+        _button.innerHTML = html.join("")
     }
 
     /**
@@ -436,10 +436,10 @@ class buttons {
     tranlate(key, value) {
         // const key = "state." + _entityName + "." + entity.state
         // this.hass.resources[this.hass.language]["state.person.home"]
-        console.log(key);
-        const lang = this.hass.selectedLanguage || this.hass.language;
-        const resources = this.hass.resources[lang] || "de";
-        return resources && resources[key] ? resources[key] : value;
+        console.log(key)
+        const lang = this.hass.selectedLanguage || this.hass.language
+        const resources = this.hass.resources[lang] || "de"
+        return resources && resources[key] ? resources[key] : value
     }
 
     /**
@@ -448,20 +448,28 @@ class buttons {
      * @param {*} entity
      */
     getButtonData(entity) {
-        if (!entity) return null;
-        const _entityType = entity.entity_id.split(".")[0] || "alert";
-        const _entityName = entity.entity_id.split(".")[1];
-        const h = this.hassEntities.find((x) => x.entity_id === entity.entity);
+        if (!entity) return null
+        const _entityType = entity.entity_id.split(".")[0] || "alert"
+        const _entityName = entity.entity_id.split(".")[1]
+        const h = this.hassEntities.find((x) => x.entity_id === entity.entity)
         // try to translate...
         // if (entity.state.constructor === String) {
         //    entity.state = this.tranlate("state." + _entityName + "." + entity.state, entity.state);
         // }
+        let _name = entity.name || _entityName || entity.attributes.name || entity.entity_id
+        let _value = localValue(entity.state, this.locale) || ""
+        let _unit = entity.unit || entity.attributes.unit_of_measurement || ""
+        if (entity.field) {
+            _name = _name + capitalize(entity.field)
+            _value = localValue(entity.attributes[entity.field.toLowerCase()] || "--")
+            _unit = entity.unit || ""
+        }
         return {
             id: entity.entity_id,
-            name: entity.name || _entityName || entity.attributes.name || entity.entity_id,
+            name: _name,
             type: _entityType,
-            value: localValue(entity.state, this.locale) || "",
-            unit: entity.unit || entity.attributes.unit_of_measurement || "",
+            value: _value,
+            unit: _unit,
             valuetype: entity.type || typeof entity.state,
             date: localDatetime(entity.last_updated, this.locale) || "",
             circle: this._calculateTime(entity.last_updated) || "",
@@ -472,7 +480,7 @@ class buttons {
             xy_color: h && h.attributes ? h.attributes.xy_color : null,
             image: entity.image || null,
             style: entity.style || ""
-        };
+        }
     }
 
     /**
@@ -481,10 +489,10 @@ class buttons {
      * @param {*} service
      */
     _toggle(state, service) {
-        if (!this.hass) return;
+        if (!this.hass) return
         this.hass.callService("homeassistant", service || "toggle", {
             entity_id: state.entity_id
-        });
+        })
     }
 
     /**
@@ -497,10 +505,10 @@ class buttons {
             bubbles: true,
             cancelable: false,
             composed: true
-        });
-        event.detail = detail || {};
-        this.shadowRoot.dispatchEvent(event);
-        return event;
+        })
+        event.detail = detail || {}
+        this.shadowRoot.dispatchEvent(event)
+        return event
     }
 
     /**
@@ -510,7 +518,7 @@ class buttons {
     _clickAction(entity) {
         this._fire("hass-more-info", {
             entityId: entity
-        });
+        })
     }
 
     /**
@@ -521,33 +529,38 @@ class buttons {
      */
     updateButtons() {
         this.entities.forEach((entity, index) => {
-            const h = this.hassEntities.find((x) => x.entity_id === entity.entity);
-            const button_data = this.getButtonData(entity);
+            const h = this.hassEntities.find((x) => x.entity_id === entity.entity)
+            const button_data = this.getButtonData(entity)
+
+            // check if button has changed or button type is light
             if (entity.last_updated !== h.last_updated || button_data.type === "light") {
+                
                 if (button_data.type === "light") {
-                    button_data.brightness = h.attributes.brightness || null;
-                    button_data.rgb_color = h.attributes.rgb_color || null;
-                    button_data.xy_color = h.attributes.xy_color || null;
+                    button_data.brightness = h.attributes.brightness || null
+                    button_data.rgb_color = h.attributes.rgb_color || null
+                    button_data.xy_color = h.attributes.xy_color || null
                 }
-                button_data.value = localValue(h.state, this.locale) || "";
-                button_data.date = localDatetime(h.last_updated, this.locale) || "";
-                button_data.circle = this._calculateTime(h.last_updated) || "";
-                const _button = this.buttonslist[entity.entity_id];
+
+                button_data.value = button_data.value
+                button_data.date = localDatetime(h.last_updated, this.locale) || ""
+                button_data.circle = this._calculateTime(h.last_updated) || ""
+                const _button = this.buttonslist[entity.entity_id]
+
                 switch (entity.type) {
                     case "digitbutton":
-                        this.renderDigitButton(_button, button_data);
-                        break;
+                        this.renderDigitButton(_button, button_data)
+                        break
                     case "imagebutton":
-                        this.renderImageButton(_button, button_data);
-                        break;
+                        this.renderImageButton(_button, button_data)
+                        break
                     case "iconbutton":
-                        this.renderIconButton(_button, button_data);
-                        break;
+                        this.renderIconButton(_button, button_data)
+                        break
                     default:
-                        this.renderDefaultButton(_button, button_data);
+                        this.renderDefaultButton(_button, button_data)
                 }
             }
-        });
+        })
     }
 
     /**
@@ -557,42 +570,42 @@ class buttons {
      */
     renderButtons() {
         this.entities.forEach((entity, index) => {
-            const button_data = this.getButtonData(entity);
+            const button_data = this.getButtonData(entity)
             if (button_data) {
                 // create the button
-                const _button = document.createElement("div");
-                _button.setAttribute("class", "sc-button buttons on");
-                _button.id = entity.entity_id;
+                const _button = document.createElement("div")
+                _button.setAttribute("class", "sc-button buttons on")
+                _button.id = entity.entity_id
                 if (button_data.style) {
-                    _button.style.cssText = _button.style.cssText + button_data.style;
+                    _button.style.cssText = _button.style.cssText + button_data.style
                 }
                 if (entity.style) {
-                    _button.style.cssText = entity.style.replaceAll("\n", "");
+                    _button.style.cssText = entity.style.replaceAll("\n", "")
                 }
                 if (button_data.value === localValue(entity.last_updated, this.locale)) {
-                    button_data.value = entity.text || "Status";
-                    button_data.unit = "";
+                    button_data.value = entity.text || "Status"
+                    button_data.unit = ""
                 }
                 switch (entity.type) {
                     case "digitbutton":
-                        this.renderDigitButton(_button, button_data);
-                        break;
+                        this.renderDigitButton(_button, button_data)
+                        break
                     case "imagebutton":
-                        _button.setAttribute("class", "sc-button image buttons on");
-                        this.renderImageButton(_button, button_data);
-                        break;
+                        _button.setAttribute("class", "sc-button image buttons on")
+                        this.renderImageButton(_button, button_data)
+                        break
                     case "iconbutton":
-                        this.renderIconButton(_button, button_data);
-                        break;
+                        this.renderIconButton(_button, button_data)
+                        break
                     default:
-                        this.renderDefaultButton(_button, button_data);
+                        this.renderDefaultButton(_button, button_data)
                 }
-                if (this.shadowRoot) _button.onclick = this._clickAction.bind(this, entity.entity_id);
-                this.buttonslist[_button.id] = _button;
+                if (this.shadowRoot) _button.onclick = this._clickAction.bind(this, entity.entity_id)
+                this.buttonslist[_button.id] = _button
                 // add the button to the layer
-                this.button_layer.append(_button);
+                this.button_layer.append(_button)
             }
-        });
+        })
     }
 
     /**
@@ -601,12 +614,12 @@ class buttons {
      */
     render() {
         if (this.entities && this.entities.length && this.parentNode) {
-            this.button_layer = document.createElement("div");
-            this.button_layer.setAttribute("class", "sc-buttons clearfix");
-            this.set_buttonstyle();
-            this.update = false;
-            this.renderButtons();
-            this.parentNode.append(this.button_layer);
+            this.button_layer = document.createElement("div")
+            this.button_layer.setAttribute("class", "sc-buttons clearfix")
+            this.set_buttonstyle()
+            this.update = false
+            this.renderButtons()
+            this.parentNode.append(this.button_layer)
         }
     }
 }
@@ -623,25 +636,25 @@ class buttons {
 class simpleClock {
     /**
      * constructor for simple clock
-     * @param {*} config 
+     * @param {*} config
      */
     constructor(config) {
-        this.parentNode = config.parentNode;
-        this.locale = config.locale;
-        this.options = config.clockoptions;
+        this.parentNode = config.parentNode
+        this.locale = config.locale
+        this.options = config.clockoptions
 
-        this.clocklayer = null;
+        this.clocklayer = null
         if (this.parentNode) {
-            this.addClockLayer();
+            this.addClockLayer()
         }
     }
 
     /**
-     * css styles for simple clock 
+     * css styles for simple clock
      */
     set_clockstyle() {
-        if(! this.clocklayer) return false;
-        const _style = document.createElement("style");
+        if (!this.clocklayer) return false
+        const _style = document.createElement("style")
         _style.textContent = `
             .sc-clock{
                 position:relative;  
@@ -663,9 +676,9 @@ class simpleClock {
                 line-height: 1.5em;
                 margin-bottom: 1em;
             }
-            `;
-            this.parentNode.append(_style);
-        return true;
+            `
+        this.parentNode.append(_style)
+        return true
     }
 
     /**
@@ -673,26 +686,26 @@ class simpleClock {
      */
     addClockLayer() {
         if (!this.clocklayer) {
-            this.clocklayer = document.createElement("div");
-            this.clocklayer.setAttribute("class", "sc-clock");
-            this.set_clockstyle() 
-            this.parentNode.appendChild(this.clocklayer);
+            this.clocklayer = document.createElement("div")
+            this.clocklayer.setAttribute("class", "sc-clock")
+            this.set_clockstyle()
+            this.parentNode.appendChild(this.clocklayer)
         }
-        this.setClockTime();
-        setInterval(this.setClockTime.bind(this), 60 * 1000);
+        this.setClockTime()
+        setInterval(this.setClockTime.bind(this), 60 * 1000)
     }
 
     /**
      * simple clock date and time
      */
     setClockTime() {
-        this.options = this.options || { weekday: "short", month: "short", day: "numeric" };
+        this.options = this.options || { weekday: "short", month: "short", day: "numeric" }
         let today = new Date(),
             h = today.getHours(),
-            m = today.getMinutes();
-        const _date = today.toLocaleDateString(this.locale, this.options).replaceAll(".", "");
-        m = m < 10 ? "0" + m : m;
-        this.clocklayer.innerHTML = `<div class="sc-time">${h}:${m}</div><div class="sc-date">${_date}</div>`;
+            m = today.getMinutes()
+        const _date = today.toLocaleDateString(this.locale, this.options).replaceAll(".", "")
+        m = m < 10 ? "0" + m : m
+        this.clocklayer.innerHTML = `<div class="sc-time">${h}:${m}</div><div class="sc-date">${_date}</div>`
     }
 }
 
@@ -713,15 +726,15 @@ class dayStateCard {
      * @param {*} config
      */
     constructor(config) {
-        this.parentNode = config.parentNode;
-        this.locale = config.locale;
-        this.hass = config.hass;
+        this.parentNode = config.parentNode
+        this.locale = config.locale
+        this.hass = config.hass
         // internal
-        this.entities = config.entities;
-        this.moon = null;
-        this.sun = null;
-        this.cardlayer = null;
-        this._config();
+        this.entities = config.entities
+        this.moon = null
+        this.sun = null
+        this.cardlayer = null
+        this._config()
     }
 
     /**
@@ -730,16 +743,16 @@ class dayStateCard {
     _config() {
         if (this.hass && this.hass.states) {
             if (this.hass.states["sun.sun"]) {
-                this.sun = this.hass.states["sun.sun"];
-                this.sun.assets = appinfo.assets + "sun/";
+                this.sun = this.hass.states["sun.sun"]
+                this.sun.assets = appinfo.assets + "sun/"
             }
             if (this.hass.states["sensor.moon"]) {
-                this.moon = this.hass.states["sensor.moon"];
-                this.moon.assets = appinfo.assets + "moon/";
-                this.moon.phase = this._getMoonPhase(this.hass.states["sensor.moon"].state);
-                this.moon.icon = this.moon.assets + this.moon.phase + ".png";
+                this.moon = this.hass.states["sensor.moon"]
+                this.moon.assets = appinfo.assets + "moon/"
+                this.moon.phase = this._getMoonPhase(this.hass.states["sensor.moon"].state)
+                this.moon.icon = this.moon.assets + this.moon.phase + ".png"
             }
-            this._createCardLayer();
+            this._createCardLayer()
         }
 
         // render the layer
@@ -749,40 +762,40 @@ class dayStateCard {
      */
     _createCardLayer() {
         if (!this.cardlayer) {
-            this.cardlayer = document.createElement("div");
-            this.cardlayer.setAttribute("class", "sc-daystate");
-            this.parentNode.appendChild(this.cardlayer);
-            this.update();
+            this.cardlayer = document.createElement("div")
+            this.cardlayer.setAttribute("class", "sc-daystate")
+            this.parentNode.appendChild(this.cardlayer)
+            this.update()
         }
     }
 
     _getMoonPhase(phase) {
         switch (phase) {
             case "new_moon":
-                return "New Moon";
+                return "New Moon"
             case "waxing_crescent":
-                return "Waxing Crescent Moon";
+                return "Waxing Crescent Moon"
             case "first_quarter":
-                return "First Quarter Moon";
+                return "First Quarter Moon"
             case "waxing_gibbous":
-                return "Waxing Gibbous Moon";
+                return "Waxing Gibbous Moon"
             case "full_moon":
-                return "Full Moon";
+                return "Full Moon"
             case "waning_gibbous":
-                return "Waning Gibbous Moon";
+                return "Waning Gibbous Moon"
             case "last_quarter":
-                return "Last Quarter Moon";
+                return "Last Quarter Moon"
             case "waning_crescent":
-                return "Waning Crescent Moon";
+                return "Waning Crescent Moon"
             default:
-                return "";
+                return ""
         }
     }
 
     /** update the moon status */
     update() {
         if (this.cardlayer) {
-            const html = [];
+            const html = []
             if (this.moon) {
                 html.push(`
                     <div class="header">
@@ -792,10 +805,10 @@ class dayStateCard {
                     <div class="content">
                         <img src="${this.moon.icon}" class="img" alt="${this.moon.phase}">
                         <span class="name">${this.moon.phase}</span>
-                    </div>`);
+                    </div>`)
             }
             if (html.length) {
-                this.cardlayer.innerHTML = html.join(" ");
+                this.cardlayer.innerHTML = html.join(" ")
             }
         }
     }
@@ -857,10 +870,10 @@ const HASS_ICONS = {
     weather: "hass:weather-cloudy",
     weblink: "hass:open-in-new",
     zone: "hass:map-marker"
-};
+}
 
 function typeOf(obj) {
-    return Object.prototype.toString.call(obj).slice(8, -1).toLowerCase();
+    return Object.prototype.toString.call(obj).slice(8, -1).toLowerCase()
 }
 
 /**
@@ -869,13 +882,13 @@ function typeOf(obj) {
  * @param {*} locale
  */
 function localDate(d, locale) {
-    if (!d) return "";
-    if (!locale) locale = navigator.language || navigator.userLanguage || "en-GB";
-    d = d.split("T")[0];
+    if (!d) return ""
+    if (!locale) locale = navigator.language || navigator.userLanguage || "en-GB"
+    d = d.split("T")[0]
     // "2020-11-24T14:23:38.158171+00:00"
-    const date = new Date(d.replace(/-/g, "/")); // bugfix Safari
-    if (isNaN(date)) return d;
-    return new Intl.DateTimeFormat(locale).format(date);
+    const date = new Date(d.replace(/-/g, "/")) // bugfix Safari
+    if (isNaN(date)) return d
+    return new Intl.DateTimeFormat(locale).format(date)
 }
 
 /**
@@ -884,11 +897,11 @@ function localDate(d, locale) {
  * @param {*} locale
  */
 function localDatetime(d, locale) {
-    if (!d) return "";
-    if (!locale) locale = navigator.language || navigator.userLanguage || "en-GB";
-    d = d.replace("T", " ");
-    const date = new Date(d.replace(/-/g, "/")); // bugfix Safari
-    if (isNaN(date)) return d;
+    if (!d) return ""
+    if (!locale) locale = navigator.language || navigator.userLanguage || "en-GB"
+    d = d.replace("T", " ")
+    const date = new Date(d.replace(/-/g, "/")) // bugfix Safari
+    if (isNaN(date)) return d
     return new Intl.DateTimeFormat(locale, {
         year: "numeric",
         month: "numeric",
@@ -896,7 +909,7 @@ function localDatetime(d, locale) {
         hour: "numeric",
         minute: "numeric",
         second: "numeric"
-    }).format(date);
+    }).format(date)
 }
 
 /**
@@ -904,7 +917,7 @@ function localDatetime(d, locale) {
  * @param {*} n
  */
 function num(n) {
-    return n === parseInt(n) ? Number(parseInt(n) * 1) : Number(parseFloat(n).toFixed(2) * 1.0);
+    return n === parseInt(n) ? Number(parseInt(n) * 1) : Number(parseFloat(n).toFixed(2) * 1.0)
 }
 
 /**
@@ -912,33 +925,33 @@ function num(n) {
  * @param {*} v
  */
 const getType = function (v) {
-    if (typeof v === "boolean") return "boolean";
-    if (typeof v === "number" || (!isNaN(parseFloat(v)) && isFinite(v))) return "number";
-    if (!Number.isNaN(Number(new Date(v)))) return "date";
-    if (typeof v === "string") return "string";
+    if (typeof v === "boolean") return "boolean"
+    if (typeof v === "number" || (!isNaN(parseFloat(v)) && isFinite(v))) return "number"
+    if (!Number.isNaN(Number(new Date(v)))) return "date"
+    if (typeof v === "string") return "string"
     return {}.toString
         .call(v)
         .match(/\s([a-zA-Z]+)/)[1]
-        .toLowerCase();
-};
+        .toLowerCase()
+}
 
 function localValue(value, locale) {
-    if (!value) return "";
-    if (!locale) locale = navigator.language || navigator.userLanguage || "en-GB";
+    if (!value) return ""
+    if (!locale) locale = navigator.language || navigator.userLanguage || "en-GB"
     if (getType(value) === "date") {
-        return localDate(value, locale);
+        return localDate(value, locale)
     }
     if (getType(value) === "number") {
         if (parseInt(value) === value) {
-            return num(value).toLocaleString(locale);
+            return num(value).toLocaleString(locale)
         } else {
             return num(value).toLocaleString(locale, {
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2
-            });
+            })
         }
     }
-    return value;
+    return value
 }
 
 /**
@@ -950,26 +963,152 @@ function localValue(value, locale) {
  * @returns combined object
  */
 function deepMerge(...sources) {
-    let acc = {};
+    let acc = {}
     for (const source of sources) {
         if (source instanceof Array) {
             if (!(acc instanceof Array)) {
-                acc = [];
+                acc = []
             }
-            acc = [...acc, ...source];
+            acc = [...acc, ...source]
         } else if (source instanceof Object) {
             for (let [key, value] of Object.entries(source)) {
                 if (value instanceof Object && key in acc) {
-                    value = deepMerge(acc[key], value);
+                    value = deepMerge(acc[key], value)
                 }
                 acc = {
                     ...acc,
                     [key]: value
-                };
+                }
             }
         }
     }
-    return acc;
+    return acc
+}
+
+/**
+ * resultlist.sort(compareValues('state'));
+ *
+ * @param {*} key
+ * @param {*} order
+ */
+function compareValues(key, order = "asc") {
+    return function innerSort(a, b) {
+        if (!a.hasOwnProperty(key) || !b.hasOwnProperty(key)) {
+            // property doesn't exist on either object
+            return 0
+        }
+        const varA = typeof a[key] === "string" ? a[key].toUpperCase() : a[key]
+        const varB = typeof b[key] === "string" ? b[key].toUpperCase() : b[key]
+        let comparison = 0
+        if (varA > varB) {
+            comparison = 1
+        } else if (varA < varB) {
+            comparison = -1
+        }
+        return order === "desc" ? comparison * -1 : comparison
+    }
+}
+
+/**
+ * capitalize string
+ * @param {*} s
+ */
+const capitalize = (s) => {
+    if (typeof s !== "string") return ""
+    return s.charAt(0).toUpperCase() + s.slice(1)
+}
+
+/**
+ * filter entities from this._hass.states
+ * @call: filter(this._hass.states,this.config_filter)
+ *
+ *  filter:
+ *     - sensor.orangenbaum*
+ *     - sensor.energie*
+ *
+ * @param {*} list
+ * @param {*} filters
+ */
+function filter(list, filters) {
+    /**
+     * filter object
+     * @param {*} stateObj
+     * @param {*} pattern
+     */
+    function _filterName(stateObj, pattern) {
+        let parts
+        let attribute
+        //console.log("STATEOBJECT:",stateObj,pattern)
+        if (typeof pattern === "object") {
+            parts = pattern["key"].split(".")
+            attribute = pattern["key"]
+        } else {
+            parts = pattern.split(".")
+            attribute = pattern
+        }
+        const regEx = new RegExp(`^${attribute.replace(/\*/g, ".*")}$`, "i")
+        return stateObj.search(regEx) === 0
+    }
+    let entities = []
+
+    filters.forEach((item) => {
+        const _filters = []
+        _filters.push((stateObj) => _filterName(stateObj, item.entity_filter))
+        if (_filters && _filters.length) {
+            Object.keys(list)
+                .sort()
+                .forEach((key) => {
+                    Object.keys(list[key]).sort()
+                    if (_filters.every((filterFunc) => filterFunc(`${key}`))) {
+                        let newItem
+                        if (item.attribute) {
+                            // check if we can use the attribute for this entity
+                            if (list[key].attributes[item.attribute]) {
+                                let _name = list[key].attributes.friendly_name
+                                    ? list[key].attributes.friendly_name
+                                    : key
+                                _name += item.name ? " " + item.name : " " + capitalize(item.attribute)
+                                newItem = {
+                                    entity: key,
+                                    name: _name,
+                                    unit: item.unit || '',
+                                    state: list[key].attributes[item.attribute.toLowerCase()],
+                                    attributes: list[key].attributes,
+                                    last_changed: list[key].last_changed,
+                                    field: item.attribute.toLowerCase()
+                                }
+                                newItem.attributes.friendly_name = newItem.name
+                            }
+                        } else {
+                            // simple entity...
+                            newItem = {
+                                entity: key,
+                                name: list[key].attributes.friendly_name ? list[key].attributes.friendly_name : key,
+                                state: list[key].state,
+                                attributes: list[key].attributes,
+                                last_changed: list[key].last_changed
+                            }
+                        }
+                        if (newItem) {
+                            if (item.options) {
+                                newItem.options = item.options
+                            }
+                            if (newItem.state && (item.state_min_value || item.state_max_value)) {
+                                const _min = item.state_min_value || Number.MIN_VALUE
+                                const _max = item.state_max || Number.MAX_VALUE
+                                newItem.state = parseFloat(newItem.state)
+                                if ((newItem.state - _min) * (newItem.state - _max) <= 0) {
+                                    entities.push(newItem)
+                                }
+                            } else {
+                                entities.push(newItem)
+                            }
+                        }
+                    }
+                })
+        }
+    })
+    return entities
 }
 
 /** --------------------------------------------------------------------
@@ -978,23 +1117,23 @@ function deepMerge(...sources) {
   credits to : https://github.com/DBuit/
 
 /** -------------------------------------------------------------------*/
-"use strict";
+"use strict"
 
 // all about the application
 const appinfo = {
     name: "✓ custom:simple-card",
     app: "simple-card",
-    version: "0.0.9",
+    version: "0.1.0",
     assets: "/hacsfiles/ha-simple-card/assets/",
     github: "https://github.com/zibous/ha-simple-card"
-};
+}
 
 // render the app-info for this custom card
 console.info(
     "%c " + appinfo.name + "     %c ▪︎▪︎▪︎▪︎ Version: " + appinfo.version + " ▪︎▪︎▪︎▪︎ ",
     "color:#FFFFFF; background:#3498db;display:inline-block;font-size:12px;font-weight:200;padding: 4px 0 4px 0",
     "color:#2c3e50; background:#ecf0f1;display:inline-block;font-size:12px;font-weight:200;padding: 4px 0 4px 0"
-);
+)
 
 /**
  * lovelace card simple card
@@ -1004,13 +1143,13 @@ class SimpleCard extends HTMLElement {
      * constructor
      */
     constructor() {
-        super();
+        super()
         this.attachShadow({
             mode: "open"
-        });
-        this._initialized = false;
-        this.entities = [];
-        this.logenabled = true;
+        })
+        this._initialized = false
+        this.entities = []
+        this.logenabled = true
     }
 
     /**
@@ -1018,64 +1157,49 @@ class SimpleCard extends HTMLElement {
      * @param {*} args
      */
     logInfo(...args) {
-        if (this.logenabled) console.info(new Date().toISOString(), appinfo.name, ...args);
+        if (this.logenabled) console.info(new Date().toISOString(), appinfo.name, ...args)
     }
 
     /**
      * set the hass entities
      */
     setHassEntities() {
-        if (!this._hass) return;
+        if (!this._hass) return
         this.hassEntities = this.entities
             .map((x) => this._hass.states[x.entity])
-            .filter((notUndefined) => notUndefined !== undefined);
+            .filter((notUndefined) => notUndefined !== undefined)
     }
 
-    /**
-     * filter entities from this._hass.states
-     * @call: getEntitiesByfilter(this._hass.states,this.config_filter)
-     *
-     *  filter:
-     *     - sensor.orangenbaum*
-     *     - sensor.energie*
-     * @param {*} list
-     * @param {*} filters
-     */
-    getEntitiesByfilter(list, filters) {
-        function _filterName(stateObj, pattern) {
-            let parts;
-            let attr_id;
-            let attribute;
-            if (typeof pattern === "object") {
-                parts = pattern["key"].split(".");
-                attribute = pattern["key"];
-            } else {
-                parts = pattern.split(".");
-                attribute = pattern;
-            }
-            const regEx = new RegExp(`^${attribute.replace(/\*/g, ".*")}$`, "i");
-            return stateObj.search(regEx) === 0;
-        }
-        let entities = [];
-        filters.forEach((filter) => {
-            const filters = [];
-            filters.push((stateObj) => _filterName(stateObj, filter));
-            Object.keys(list)
-                .sort()
-                .forEach((key) => {
-                    Object.keys(list[key]).sort();
-                    if (filters.every((filterFunc) => filterFunc(`${key}`))) {
-                        entities.push(list[key]);
-                    }
-                });
-        });
-        return entities;
-    }
     /**
      * get the entities
      */
     getEntities() {
-        return this._config.entities;
+        let _entities = this._config.entities || []
+        if(!_entities || _entities.length===0) return
+        const _filterlist   = this._config.entities.filter((x) => x.entity_filter!=undefined)
+        const _entitylist = this._config.entities.filter((x) => x.entity!=undefined)
+        if (this._hass && this._hass.states && _filterlist && _filterlist.length) {
+            const _hass_states = this._hass.states
+            const _filterEntities = filter(_hass_states, _filterlist)
+            // if (this._config.filter.filteroptions) {
+            //     // addional filters...
+            //     // _filterEntities = _filterEntities.slice(0, 5) //
+            // }
+            _entities = [..._entitylist, ..._filterEntities]
+        }
+        if (_entities && _entities.length) {
+            // build the this.entities list
+            for (let x of _entities) {
+                if (this._hass.states[x.entity]) {
+                    let _entity = {
+                        ...this._hass.states[x.entity],
+                        ...x
+                    }
+                    this.entities.push(_entity)
+                }
+            }
+        }
+        return _entities
     }
 
     /**
@@ -1085,14 +1209,14 @@ class SimpleCard extends HTMLElement {
      * @param {*} sub_attribute
      */
     _getAttribute(entityId, attr, sub_attribute) {
-        if (this.hass && this.hass.states[entityId]) {
-            let _state = this.hass.states[entityId].attributes[attr];
+        if (this._hass && this._hass.states[entityId]) {
+            let _state = this._hass.states[entityId].attributes[attr]
             if (subattr) {
-                _state = this.hass.states[entityId].attributes[attr][sub_attribute];
+                _state = this._hass.states[entityId].attributes[attr][sub_attribute]
             }
-            return _state;
+            return _state
         }
-        return null;
+        return null
     }
 
     /**
@@ -1103,27 +1227,27 @@ class SimpleCard extends HTMLElement {
      */
     _getAttributes(hass, filters) {
         function _filterName(stateObj, pattern) {
-            let parts;
-            let attr_id;
-            let attribute;
+            let parts
+            let attr_id
+            let attribute
             if (typeof pattern === "object") {
-                parts = pattern["key"].split(".");
-                attribute = pattern["key"];
+                parts = pattern["key"].split(".")
+                attribute = pattern["key"]
             } else {
-                parts = pattern.split(".");
-                attribute = pattern;
+                parts = pattern.split(".")
+                attribute = pattern
             }
-            attr_id = parts[2];
+            attr_id = parts[2]
             if (attr_id.indexOf("*") === -1) {
-                return stateObj == attribute;
+                return stateObj == attribute
             }
-            const regEx = new RegExp(`^${attribute.replace(/\*/g, ".*")}$`, "i");
-            return stateObj.search(regEx) === 0;
+            const regEx = new RegExp(`^${attribute.replace(/\*/g, ".*")}$`, "i")
+            return stateObj.search(regEx) === 0
         }
-        const attributes = new Map();
+        const attributes = new Map()
         filters.forEach((filter) => {
-            const filters = [];
-            filters.push((stateObj) => _filterName(stateObj, filter));
+            const filters = []
+            filters.push((stateObj) => _filterName(stateObj, filter))
             Object.keys(hass.states)
                 .sort()
                 .forEach((key) => {
@@ -1136,12 +1260,12 @@ class SimpleCard extends HTMLElement {
                                     value: hass.states[key].attributes[attr_key],
                                     unit: filter.unit || "",
                                     icon: filter.icon || ""
-                                });
+                                })
                             }
-                        });
-                });
-        });
-        return Array.from(attributes.values());
+                        })
+                })
+        })
+        return Array.from(attributes.values())
     }
 
     /**
@@ -1149,49 +1273,37 @@ class SimpleCard extends HTMLElement {
      */
     set hass(hass) {
         // check if hass is present
-        if (hass === undefined) return;
+        if (hass === undefined) return
         // skip not initialized
-        if (!this._initialized) return;
+        if (!this._initialized) return
 
-        this._hass = hass;
+        this._hass = hass
 
-        this.setHassEntities();
+        this.setHassEntities()
 
         if (this.buttons && this.mode === "buttons") {
-            this.buttons.hass = this._hass;
-            this.buttons.hassEntities = this.hassEntities;
+            this.buttons.hass = this._hass
+            this.buttons.hassEntities = this.hassEntities
             if (this.buttons.intialized === false && this.entities) {
-                this.buttons.updateButtons();
+                this.buttons.updateButtons()
             }
         }
 
-        if (this.skipRender) this.updateData();
-
-        if (this.skipRender) return;
+        if (this.skipRender) this.updateData()
+        if (this.skipRender) return
 
         if (!this.init) {
-            this.init = true;
-            this.entities = [];
+            this.init = true
+            this.entities = []
             if (this.mode === "buttons") {
-                const _entities = this.getEntities();
-                if (_entities && _entities.length) {
-                    for (let x of _entities) {
-                        if (this._hass.states[x.entity]) {
-                            let _entity = {
-                                ...this._hass.states[x.entity],
-                                ...x
-                            };
-                            this.entities.push(_entity);
-                        }
-                    }
-                }
+                this.getEntities()
             }
             if (!this.card) {
-                this.createCard();
+                this.createCard()
             }
         }
 
-        this.skipRender = true;
+        this.skipRender = true
     }
 
     /**
@@ -1204,24 +1316,24 @@ class SimpleCard extends HTMLElement {
             switch (this.mode) {
                 case "buttons":
                     if (this.buttons && this.hassEntities && this.hassEntities.length) {
-                        this.buttons.hassEntities = this.hassEntities;
-                        this.buttons.updateButtons();
+                        this.buttons.hassEntities = this.hassEntities
+                        this.buttons.updateButtons()
                     }
-                    break;
+                    break
                 case "entities_card":
                     if (this.attibutesfilter && this.attibutesfilter.include) {
-                        let attributes = this._getAttributes(this._hass, this.attibutesfilter.include);
+                        let attributes = this._getAttributes(this._hass, this.attibutesfilter.include)
                         if (this.attibutesfilter.exclude) {
                             const excludeAttributes = this._getAttributes(this._hass, this.attibutesfilter.exclude).map(
                                 (attr) => attr.name
-                            );
+                            )
                             attributes = attributes.filter((attr) => {
-                                return !excludeAttributes.includes(attr.name);
-                            });
+                                return !excludeAttributes.includes(attr.name)
+                            })
                         }
-                        this.updateDataTable(this.root.getElementById("entities_card"), attributes);
+                        this.updateDataTable(this.root.getElementById("entities_card"), attributes)
                     }
-                    break;
+                    break
                 default:
             }
         }
@@ -1231,8 +1343,8 @@ class SimpleCard extends HTMLElement {
      * add inline css
      */
     addCss() {
-        const _style = document.createElement("style");
-        _style.setAttribute("id", "sc-" + this.id);
+        const _style = document.createElement("style")
+        _style.setAttribute("id", "sc-" + this.id)
         _style.textContent = `
           .ha-simplecard-buttons{
               position: relative;
@@ -1298,8 +1410,8 @@ class SimpleCard extends HTMLElement {
                 font-size: 1.1em;
             }
          }
-        `;
-        this.root.append(_style);
+        `
+        this.root.append(_style)
     }
 
     /**
@@ -1308,7 +1420,7 @@ class SimpleCard extends HTMLElement {
      * @param {*} attributes
      */
     updateDataTable(element, attributes) {
-        if (!element || !attributes) return;
+        if (!element || !attributes) return
         element.innerHTML = `
             ${attributes
                 .map(
@@ -1322,7 +1434,7 @@ class SimpleCard extends HTMLElement {
             `
                 )
                 .join("")}
-          `;
+          `
     }
 
     /**
@@ -1330,29 +1442,29 @@ class SimpleCard extends HTMLElement {
      * @param {*} content
      */
     createCardContent(content) {
-        if (!content) return;
+        if (!content) return
 
-        const useLayer = this.height != "100%";
-        let contentLayer = null;
+        const useLayer = this.height != "100%"
+        let contentLayer = null
 
         if (this._config.title) {
             // add the title and the icon to the ha-card
-            const _title = document.createElement("h2");
-            _title.setAttribute("class", "sc-title");
+            const _title = document.createElement("h2")
+            _title.setAttribute("class", "sc-title")
             if (this._config.icon) {
-                const iconel = document.createElement("ha-icon");
-                iconel.setAttribute("icon", this._config.icon);
-                iconel.setAttribute("class", "sc-icon");
-                iconel.style.cssText = "--mdc-icon-size: 1.2em";
-                _title.appendChild(iconel);
-                const view_titletext = document.createElement("span");
-                view_titletext.innerHTML = this._config.title;
-                _title.appendChild(view_titletext);
+                const iconel = document.createElement("ha-icon")
+                iconel.setAttribute("icon", this._config.icon)
+                iconel.setAttribute("class", "sc-icon")
+                iconel.style.cssText = "--mdc-icon-size: 1.2em"
+                _title.appendChild(iconel)
+                const view_titletext = document.createElement("span")
+                view_titletext.innerHTML = this._config.title
+                _title.appendChild(view_titletext)
             } else {
-                _title.style.cssText = "margin-left:0.8em !important";
-                _title.innerHTML = this._config.title;
+                _title.style.cssText = "margin-left:0.8em !important"
+                _title.innerHTML = this._config.title
             }
-            content.appendChild(_title);
+            content.appendChild(_title)
         }
 
         if (this._config.clock) {
@@ -1360,7 +1472,7 @@ class SimpleCard extends HTMLElement {
             const cardClock = new simpleClock({
                 parentNode: content,
                 locale: this.locale
-            });
+            })
         }
 
         if (this.mode == "buttons") {
@@ -1372,48 +1484,48 @@ class SimpleCard extends HTMLElement {
                 entities: this.entities,
                 hassEntities: this.hassEntities,
                 locale: this.locale
-            });
+            })
         }
 
         if (useLayer) {
-            contentLayer = document.createElement("div");
-            contentLayer.setAttribute("class", "sc-layer");
-            contentLayer.style.cssText = `height:${this.height - 100}px;widht:100%;overflow:auto;`;
+            contentLayer = document.createElement("div")
+            contentLayer.setAttribute("class", "sc-layer")
+            contentLayer.style.cssText = `height:${this.height - 100}px;widht:100%;overflow:auto;`
         }
 
         if (this._config.text) {
             // add content text
-            let _text = document.createElement("p");
-            _text.setAttribute("class", "sc-text");
+            let _text = document.createElement("p")
+            _text.setAttribute("class", "sc-text")
             if (this._config.icon) {
-                _text.style.cssText = "margin-left: 2.8em;";
+                _text.style.cssText = "margin-left: 2.8em;"
             }
-            _text.innerHTML = this._config.text;
+            _text.innerHTML = this._config.text
             if (useLayer && contentLayer) {
-                contentLayer.append(_text);
+                contentLayer.append(_text)
             } else {
-                content.appendChild(_text);
+                content.appendChild(_text)
             }
         }
 
         if (this.mode == "entities_card") {
             // add datatable for then entities_card
-            const datatable = document.createElement("div");
-            datatable.setAttribute("class", "dt-data");
+            const datatable = document.createElement("div")
+            datatable.setAttribute("class", "dt-data")
             datatable.innerHTML = `
                 <table class="dt-data">
                     <tbody id="entities_card">
                     </tbody>
                 </table>
-            `;
+            `
             if (useLayer && contentLayer) {
-                contentLayer.append(datatable);
+                contentLayer.append(datatable)
             } else {
-                content.appendChild(datatable);
+                content.appendChild(datatable)
             }
         }
         if (useLayer && contentLayer) {
-            content.appendChild(contentLayer);
+            content.appendChild(contentLayer)
         }
     }
 
@@ -1424,21 +1536,21 @@ class SimpleCard extends HTMLElement {
     createCard() {
         //const eId = Math.random().toString(36).substr(2, 9);
         // this.id = "card-" + eId;
-        this.card = document.createElement("ha-card");
-        this.card.setAttribute("class", "ha-simplecard");
+        this.card = document.createElement("ha-card")
+        this.card.setAttribute("class", "ha-simplecard")
         if (this.mode == "buttons") {
-            this.card.setAttribute("class", "ha-simplecard-buttons");
-            this.card.style.boxShadow = "none";
-            this.card.style.borderRadius = "0";
+            this.card.setAttribute("class", "ha-simplecard-buttons")
+            this.card.style.boxShadow = "none"
+            this.card.style.borderRadius = "0"
         }
-        this.addCss();
-        const content = document.createElement("div");
-        content.id = this.id + "-content";
-        content.style.height = content.style.minHeight = this.height + "px";
-        this.createCardContent(content);
-        this.card.appendChild(content);
-        this.root.appendChild(this.card);
-        this.setAttribute("title", "");
+        this.addCss()
+        const content = document.createElement("div")
+        content.id = this.id + "-content"
+        content.style.height = content.style.minHeight = this.height + "px"
+        this.createCardContent(content)
+        this.card.appendChild(content)
+        this.root.appendChild(this.card)
+        this.setAttribute("title", "")
         //this.style.cssText = "height:100%;width:100%;";
     }
 
@@ -1450,12 +1562,12 @@ class SimpleCard extends HTMLElement {
      */
     _checkLocale(locale) {
         try {
-            Intl.getCanonicalLocales(locale);
+            Intl.getCanonicalLocales(locale)
         } catch (err) {
-            console.error(" RangeError: invalid language tag:", _this.config);
-            return navigator.language || navigator.userLanguage;
+            console.error(" RangeError: invalid language tag:", _this.config)
+            return navigator.language || navigator.userLanguage
         }
-        return locale;
+        return locale
     }
 
     /**
@@ -1463,29 +1575,29 @@ class SimpleCard extends HTMLElement {
      * @param {*} config
      */
     setConfig(config) {
-        this.root = this.shadowRoot;
-        if (this.root.lastChild) this.root.removeChild(root.lastChild);
+        this.root = this.shadowRoot
+        if (this.root.lastChild) this.root.removeChild(root.lastChild)
         if (!this._config) {
-            this._config = Object.assign({}, config);
-            this.id = "SC" + Math.floor(Math.random() * 1000);
-            const _browserlocale = navigator.language || navigator.userLanguage || "en-GB";
-            this.locale = config.locale || _browserlocale;
-            this._checkLocale();
-            this.logenabled = config.logger || true;
-            this.height = this._config.height || "100%";
-            this.title = this._config.title;
-            this.text = this._config.text;
-            this.mode = this._config.mode;
+            this._config = Object.assign({}, config)
+            this.id = "SC" + Math.floor(Math.random() * 1000)
+            const _browserlocale = navigator.language || navigator.userLanguage || "en-GB"
+            this.locale = config.locale || _browserlocale
+            this._checkLocale()
+            this.logenabled = config.logger || true
+            this.height = this._config.height || "100%"
+            this.title = this._config.title
+            this.text = this._config.text
+            this.mode = this._config.mode
             if (!["buttons", "entities_card"].includes(this.mode)) {
-                this.mode = "default";
+                this.mode = "default"
             }
             // attribute datatable
-            this.attibutesfilter = this._config.filter || null;
-            this.skipRender = false;
-            this.entities = [];
-            this.hassEntities = [];
-            this.loginfo_enabled = true;
-            this._initialized = true;
+            this.attibutesfilter = this._config.filter || null
+            this.skipRender = false
+            this.entities = []
+            this.hassEntities = []
+            this.loginfo_enabled = true
+            this._initialized = true
         }
     }
 
@@ -1493,14 +1605,14 @@ class SimpleCard extends HTMLElement {
      * The connectedCallback() runs when the element is added to the DOM
      */
     connectedCallback() {
-        this._initialized = true;
+        this._initialized = true
     }
 
     /**
      * the disconnectedCallback() runs when the element is either removed from the DOM.
      */
     disconnectedCallback() {
-        this._initialized = false;
+        this._initialized = false
     }
 
     /**
@@ -1508,11 +1620,11 @@ class SimpleCard extends HTMLElement {
      * distribute all cards over the available columns.
      */
     getCardSize() {
-        return 3;
+        return 3
     }
 }
 
-customElements.define("simple-card", SimpleCard);
+customElements.define("simple-card", SimpleCard)
 
 /** --------------------------------------------------------------------
 

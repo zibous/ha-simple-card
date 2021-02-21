@@ -10,25 +10,25 @@
 class simpleClock {
     /**
      * constructor for simple clock
-     * @param {*} config 
+     * @param {*} config
      */
     constructor(config) {
-        this.parentNode = config.parentNode;
-        this.locale = config.locale;
-        this.options = config.clockoptions;
+        this.parentNode = config.parentNode
+        this.locale = config.locale
+        this.options = config.clockoptions
 
-        this.clocklayer = null;
+        this.clocklayer = null
         if (this.parentNode) {
-            this.addClockLayer();
+            this.addClockLayer()
         }
     }
 
     /**
-     * css styles for simple clock 
+     * css styles for simple clock
      */
     set_clockstyle() {
-        if(! this.clocklayer) return false;
-        const _style = document.createElement("style");
+        if (!this.clocklayer) return false
+        const _style = document.createElement("style")
         _style.textContent = `
             .sc-clock{
                 position:relative;  
@@ -50,9 +50,9 @@ class simpleClock {
                 line-height: 1.5em;
                 margin-bottom: 1em;
             }
-            `;
-            this.parentNode.append(_style);
-        return true;
+            `
+        this.parentNode.append(_style)
+        return true
     }
 
     /**
@@ -60,25 +60,25 @@ class simpleClock {
      */
     addClockLayer() {
         if (!this.clocklayer) {
-            this.clocklayer = document.createElement("div");
-            this.clocklayer.setAttribute("class", "sc-clock");
-            this.set_clockstyle() 
-            this.parentNode.appendChild(this.clocklayer);
+            this.clocklayer = document.createElement("div")
+            this.clocklayer.setAttribute("class", "sc-clock")
+            this.set_clockstyle()
+            this.parentNode.appendChild(this.clocklayer)
         }
-        this.setClockTime();
-        setInterval(this.setClockTime.bind(this), 60 * 1000);
+        this.setClockTime()
+        setInterval(this.setClockTime.bind(this), 60 * 1000)
     }
 
     /**
      * simple clock date and time
      */
     setClockTime() {
-        this.options = this.options || { weekday: "short", month: "short", day: "numeric" };
+        this.options = this.options || { weekday: "short", month: "short", day: "numeric" }
         let today = new Date(),
             h = today.getHours(),
-            m = today.getMinutes();
-        const _date = today.toLocaleDateString(this.locale, this.options).replaceAll(".", "");
-        m = m < 10 ? "0" + m : m;
-        this.clocklayer.innerHTML = `<div class="sc-time">${h}:${m}</div><div class="sc-date">${_date}</div>`;
+            m = today.getMinutes()
+        const _date = today.toLocaleDateString(this.locale, this.options).replaceAll(".", "")
+        m = m < 10 ? "0" + m : m
+        this.clocklayer.innerHTML = `<div class="sc-time">${h}:${m}</div><div class="sc-date">${_date}</div>`
     }
 }

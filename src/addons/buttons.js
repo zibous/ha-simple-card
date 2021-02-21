@@ -16,25 +16,25 @@ class buttons {
      * @param {*} config
      */
     constructor(config) {
-        this.shadowRoot = config.shadowRoot;
-        this.parentNode = config.parentNode;
-        this.hass = config.hass;
-        this.entities = config.entities;
-        this.hassEntities = config.hassEntities;
-        this.locale = config.locale;
-        this.buttonstate = {};
-        this.buttonslist = [];
-        this.button_layer = null;
-        this.update = false;
-        this.intialized = false;
-        this.render();
+        this.shadowRoot = config.shadowRoot
+        this.parentNode = config.parentNode
+        this.hass = config.hass
+        this.entities = config.entities
+        this.hassEntities = config.hassEntities
+        this.locale = config.locale
+        this.buttonstate = {}
+        this.buttonslist = []
+        this.button_layer = null
+        this.update = false
+        this.intialized = false
+        this.render()
     }
     /**
      * set the styles for the buttons
      */
     set_buttonstyle() {
-        if (!this.button_layer) return false;
-        const _style = document.createElement("style");
+        if (!this.button_layer) return false
+        const _style = document.createElement("style")
         _style.textContent = `
             .sc-buttons{
                 position:relative;
@@ -233,9 +233,9 @@ class buttons {
                     margin: -0.6em;
                 }
             }
-        `;
-        this.parentNode.append(_style);
-        return true;
+        `
+        this.parentNode.append(_style)
+        return true
     }
 
     /**
@@ -244,21 +244,21 @@ class buttons {
      * @param {*} lastUpdated
      */
     _calculateTime(lastUpdated) {
-        const currentDate = new Date();
-        const lastDate = new Date(lastUpdated);
-        const diffMs = currentDate.getTime() - lastDate.getTime();
-        const diffDays = Math.floor(diffMs / 86400000); // days
-        const diffHrs = Math.floor((diffMs % 86400000) / 3600000); // hours
-        const diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000); // minutes
-        const diffSecs = Math.round((((diffMs % 86400000) % 3600000) % 60000) / 1000);
+        const currentDate = new Date()
+        const lastDate = new Date(lastUpdated)
+        const diffMs = currentDate.getTime() - lastDate.getTime()
+        const diffDays = Math.floor(diffMs / 86400000) // days
+        const diffHrs = Math.floor((diffMs % 86400000) / 3600000) // hours
+        const diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000) // minutes
+        const diffSecs = Math.round((((diffMs % 86400000) % 3600000) % 60000) / 1000)
         if (diffDays > 0) {
-            return diffDays + " d";
+            return diffDays + " d"
         } else if (diffHrs > 0) {
-            return diffHrs + " h";
+            return diffHrs + " h"
         } else if (diffMins > 0) {
-            return diffMins + " m";
+            return diffMins + " m"
         } else {
-            return diffSecs + " s";
+            return diffSecs + " s"
         }
     }
     /**
@@ -269,11 +269,11 @@ class buttons {
     _checkButtonState(_button, button_data) {
         this.buttonstate = {
             status: ["off", "unavailable"].includes(button_data.value) ? "off" : "on"
-        };
+        }
         if (this.buttonstate.status === "off") {
-            _button.classList.add("off");
+            _button.classList.add("off")
         } else {
-            _button.classList.remove("off");
+            _button.classList.remove("off")
         }
     }
 
@@ -311,7 +311,7 @@ class buttons {
                     }
                 </text>
             </svg>
-        `;
+        `
     }
 
     /**
@@ -323,20 +323,20 @@ class buttons {
      * @param {*} button_data
      */
     renderImageButton(_button, button_data) {
-        this._checkButtonState(_button, button_data);
-        let html = [];
+        this._checkButtonState(_button, button_data)
+        let html = []
         if (button_data.image) {
             // add background image, state and name
             _button.style.cssText =
                 _button.style.cssText +
-                `background-image: url('${button_data.image}'); no-repeat center center fixed;background-size: cover;`;
+                `background-image: url('${button_data.image}'); no-repeat center center fixed;background-size: cover;`
             html.push(
                 `<div class="sc-imagebutton"> 
                  <div id="${button_data.id}V" class="sc-imagebutton-value">${button_data.value}</div>
                  <div class="sc-imagebutton-name">${button_data.name.toUpperCase()}</div>
                </div>`
-            );
-            _button.innerHTML = html.join("");
+            )
+            _button.innerHTML = html.join("")
         }
     }
 
@@ -347,8 +347,8 @@ class buttons {
      * @param {*} button_data
      */
     renderIconButton(_button, button_data) {
-        this._checkButtonState(_button, button_data);
-        let html = [];
+        this._checkButtonState(_button, button_data)
+        let html = []
         if (button_data.icon) {
             html.push(
                 `<div class="sc-iconbutton"> 
@@ -358,8 +358,8 @@ class buttons {
                 }"></ha-icon>
                  <div class="sc-iconbutton-name">${button_data.name.toUpperCase()}</div>
                </div>`
-            );
-            _button.innerHTML = html.join("");
+            )
+            _button.innerHTML = html.join("")
         }
     }
 
@@ -369,24 +369,24 @@ class buttons {
      * @param {*} button_data
      */
     renderDigitButton(_button, button_data) {
-        this._checkButtonState(_button, button_data);
-        let html = [];
+        this._checkButtonState(_button, button_data)
+        let html = []
         if (button_data.image) {
-            html.push(`<img class="icon image" src="${button_data.image}" alt="" />`);
+            html.push(`<img class="icon image" src="${button_data.image}" alt="" />`)
         } else {
             html.push(
                 `<ha-icon id="${button_data.id}I" class="icon ${this.buttonstate.status}" icon="${button_data.icon}"></ha-icon>`
-            );
+            )
         }
-        html.push(`${this.renderCircleState(button_data)}`);
+        html.push(`${this.renderCircleState(button_data)}`)
         html.push(`<div class="sc-digitbutton-data">  
                     <div id="${button_data.id}V" class="sc-digitbutton-value">${button_data.value}
                         <span>${button_data.unit}<span>
                     </div>
                     <div class="sc-digitbutton-name">${button_data.name.toUpperCase()}</div>
                    </div>
-        `);
-        _button.innerHTML = html.join("");
+        `)
+        _button.innerHTML = html.join("")
     }
 
     /**
@@ -398,24 +398,24 @@ class buttons {
      * @called renderbuttons, updatebuttons
      */
     renderDefaultButton(_button, button_data) {
-        this._checkButtonState(_button, button_data);
-        let html = [];
+        this._checkButtonState(_button, button_data)
+        let html = []
         if (button_data.image) {
-            html.push(`<img class="icon image img" src="${button_data.image}" alt="" />`);
+            html.push(`<img class="icon image img" src="${button_data.image}" alt="" />`)
         } else {
             html.push(
                 `<ha-icon id="${button_data.id}I" class="icon ${this.buttonstate.status}" icon="${button_data.icon}"></ha-icon>`
-            );
+            )
         }
-        html.push(`${this.renderCircleState(button_data)}`);
+        html.push(`${this.renderCircleState(button_data)}`)
         html.push(`
           <div class="sc-button-data">  
           <div class="sc-button-name">${button_data.name.toUpperCase()}</div>
           <div id="${button_data.id}V" class="sc-button-value">${button_data.value} ${button_data.unit}</div>
           <div id="${button_data.id}D" class="sc-button-date">${button_data.date}</div>
           </div>
-        `);
-        _button.innerHTML = html.join("");
+        `)
+        _button.innerHTML = html.join("")
     }
 
     /**
@@ -427,10 +427,10 @@ class buttons {
     tranlate(key, value) {
         // const key = "state." + _entityName + "." + entity.state
         // this.hass.resources[this.hass.language]["state.person.home"]
-        console.log(key);
-        const lang = this.hass.selectedLanguage || this.hass.language;
-        const resources = this.hass.resources[lang] || "de";
-        return resources && resources[key] ? resources[key] : value;
+        console.log(key)
+        const lang = this.hass.selectedLanguage || this.hass.language
+        const resources = this.hass.resources[lang] || "de"
+        return resources && resources[key] ? resources[key] : value
     }
 
     /**
@@ -439,20 +439,28 @@ class buttons {
      * @param {*} entity
      */
     getButtonData(entity) {
-        if (!entity) return null;
-        const _entityType = entity.entity_id.split(".")[0] || "alert";
-        const _entityName = entity.entity_id.split(".")[1];
-        const h = this.hassEntities.find((x) => x.entity_id === entity.entity);
+        if (!entity) return null
+        const _entityType = entity.entity_id.split(".")[0] || "alert"
+        const _entityName = entity.entity_id.split(".")[1]
+        const h = this.hassEntities.find((x) => x.entity_id === entity.entity)
         // try to translate...
         // if (entity.state.constructor === String) {
         //    entity.state = this.tranlate("state." + _entityName + "." + entity.state, entity.state);
         // }
+        let _name = entity.name || _entityName || entity.attributes.name || entity.entity_id
+        let _value = localValue(entity.state, this.locale) || ""
+        let _unit = entity.unit || entity.attributes.unit_of_measurement || ""
+        if (entity.field) {
+            _name = _name + capitalize(entity.field)
+            _value = localValue(entity.attributes[entity.field.toLowerCase()] || "--")
+            _unit = entity.unit || ""
+        }
         return {
             id: entity.entity_id,
-            name: entity.name || _entityName || entity.attributes.name || entity.entity_id,
+            name: _name,
             type: _entityType,
-            value: localValue(entity.state, this.locale) || "",
-            unit: entity.unit || entity.attributes.unit_of_measurement || "",
+            value: _value,
+            unit: _unit,
             valuetype: entity.type || typeof entity.state,
             date: localDatetime(entity.last_updated, this.locale) || "",
             circle: this._calculateTime(entity.last_updated) || "",
@@ -463,7 +471,7 @@ class buttons {
             xy_color: h && h.attributes ? h.attributes.xy_color : null,
             image: entity.image || null,
             style: entity.style || ""
-        };
+        }
     }
 
     /**
@@ -472,10 +480,10 @@ class buttons {
      * @param {*} service
      */
     _toggle(state, service) {
-        if (!this.hass) return;
+        if (!this.hass) return
         this.hass.callService("homeassistant", service || "toggle", {
             entity_id: state.entity_id
-        });
+        })
     }
 
     /**
@@ -488,10 +496,10 @@ class buttons {
             bubbles: true,
             cancelable: false,
             composed: true
-        });
-        event.detail = detail || {};
-        this.shadowRoot.dispatchEvent(event);
-        return event;
+        })
+        event.detail = detail || {}
+        this.shadowRoot.dispatchEvent(event)
+        return event
     }
 
     /**
@@ -501,7 +509,7 @@ class buttons {
     _clickAction(entity) {
         this._fire("hass-more-info", {
             entityId: entity
-        });
+        })
     }
 
     /**
@@ -512,33 +520,38 @@ class buttons {
      */
     updateButtons() {
         this.entities.forEach((entity, index) => {
-            const h = this.hassEntities.find((x) => x.entity_id === entity.entity);
-            const button_data = this.getButtonData(entity);
+            const h = this.hassEntities.find((x) => x.entity_id === entity.entity)
+            const button_data = this.getButtonData(entity)
+
+            // check if button has changed or button type is light
             if (entity.last_updated !== h.last_updated || button_data.type === "light") {
+                
                 if (button_data.type === "light") {
-                    button_data.brightness = h.attributes.brightness || null;
-                    button_data.rgb_color = h.attributes.rgb_color || null;
-                    button_data.xy_color = h.attributes.xy_color || null;
+                    button_data.brightness = h.attributes.brightness || null
+                    button_data.rgb_color = h.attributes.rgb_color || null
+                    button_data.xy_color = h.attributes.xy_color || null
                 }
-                button_data.value = localValue(h.state, this.locale) || "";
-                button_data.date = localDatetime(h.last_updated, this.locale) || "";
-                button_data.circle = this._calculateTime(h.last_updated) || "";
-                const _button = this.buttonslist[entity.entity_id];
+
+                button_data.value = button_data.value
+                button_data.date = localDatetime(h.last_updated, this.locale) || ""
+                button_data.circle = this._calculateTime(h.last_updated) || ""
+                const _button = this.buttonslist[entity.entity_id]
+
                 switch (entity.type) {
                     case "digitbutton":
-                        this.renderDigitButton(_button, button_data);
-                        break;
+                        this.renderDigitButton(_button, button_data)
+                        break
                     case "imagebutton":
-                        this.renderImageButton(_button, button_data);
-                        break;
+                        this.renderImageButton(_button, button_data)
+                        break
                     case "iconbutton":
-                        this.renderIconButton(_button, button_data);
-                        break;
+                        this.renderIconButton(_button, button_data)
+                        break
                     default:
-                        this.renderDefaultButton(_button, button_data);
+                        this.renderDefaultButton(_button, button_data)
                 }
             }
-        });
+        })
     }
 
     /**
@@ -548,42 +561,42 @@ class buttons {
      */
     renderButtons() {
         this.entities.forEach((entity, index) => {
-            const button_data = this.getButtonData(entity);
+            const button_data = this.getButtonData(entity)
             if (button_data) {
                 // create the button
-                const _button = document.createElement("div");
-                _button.setAttribute("class", "sc-button buttons on");
-                _button.id = entity.entity_id;
+                const _button = document.createElement("div")
+                _button.setAttribute("class", "sc-button buttons on")
+                _button.id = entity.entity_id
                 if (button_data.style) {
-                    _button.style.cssText = _button.style.cssText + button_data.style;
+                    _button.style.cssText = _button.style.cssText + button_data.style
                 }
                 if (entity.style) {
-                    _button.style.cssText = entity.style.replaceAll("\n", "");
+                    _button.style.cssText = entity.style.replaceAll("\n", "")
                 }
                 if (button_data.value === localValue(entity.last_updated, this.locale)) {
-                    button_data.value = entity.text || "Status";
-                    button_data.unit = "";
+                    button_data.value = entity.text || "Status"
+                    button_data.unit = ""
                 }
                 switch (entity.type) {
                     case "digitbutton":
-                        this.renderDigitButton(_button, button_data);
-                        break;
+                        this.renderDigitButton(_button, button_data)
+                        break
                     case "imagebutton":
-                        _button.setAttribute("class", "sc-button image buttons on");
-                        this.renderImageButton(_button, button_data);
-                        break;
+                        _button.setAttribute("class", "sc-button image buttons on")
+                        this.renderImageButton(_button, button_data)
+                        break
                     case "iconbutton":
-                        this.renderIconButton(_button, button_data);
-                        break;
+                        this.renderIconButton(_button, button_data)
+                        break
                     default:
-                        this.renderDefaultButton(_button, button_data);
+                        this.renderDefaultButton(_button, button_data)
                 }
-                if (this.shadowRoot) _button.onclick = this._clickAction.bind(this, entity.entity_id);
-                this.buttonslist[_button.id] = _button;
+                if (this.shadowRoot) _button.onclick = this._clickAction.bind(this, entity.entity_id)
+                this.buttonslist[_button.id] = _button
                 // add the button to the layer
-                this.button_layer.append(_button);
+                this.button_layer.append(_button)
             }
-        });
+        })
     }
 
     /**
@@ -592,12 +605,12 @@ class buttons {
      */
     render() {
         if (this.entities && this.entities.length && this.parentNode) {
-            this.button_layer = document.createElement("div");
-            this.button_layer.setAttribute("class", "sc-buttons clearfix");
-            this.set_buttonstyle();
-            this.update = false;
-            this.renderButtons();
-            this.parentNode.append(this.button_layer);
+            this.button_layer = document.createElement("div")
+            this.button_layer.setAttribute("class", "sc-buttons clearfix")
+            this.set_buttonstyle()
+            this.update = false
+            this.renderButtons()
+            this.parentNode.append(this.button_layer)
         }
     }
 }
