@@ -68,6 +68,7 @@ A simple card with different buttons (homkit style)
 | ---- | ---- | ------- | -----------
 | type | string | **Required** | `custom:simple-card`
 | title | string | optional | 
+| subtitle | string | optional | 
 | icon | string | optional | 
 | mode | string | **Required**  | `buttons`
 | style | string | optional  |

@@ -62,9 +62,9 @@ class SimpleCard extends HTMLElement {
      */
     getEntities() {
         let _entities = this._config.entities || []
-        if(!_entities || _entities.length===0) return
-        const _filterlist   = this._config.entities.filter((x) => x.entity_filter!=undefined)
-        const _entitylist = this._config.entities.filter((x) => x.entity!=undefined)
+        if (!_entities || _entities.length === 0) return
+        const _filterlist = this._config.entities.filter((x) => x.entity_filter != undefined)
+        const _entitylist = this._config.entities.filter((x) => x.entity != undefined)
         if (this._hass && this._hass.states && _filterlist && _filterlist.length) {
             const _hass_states = this._hass.states
             const _filterEntities = filter(_hass_states, _filterlist)
@@ -242,7 +242,7 @@ class SimpleCard extends HTMLElement {
             top: -3px;
             color: var(--primary-text-color)
           }
-          h2.sc-title{
+          h2.sc-title, h2.sc-subtitle{
             font-size: 1.75em;
             font-weight: 500;
             padding-top: 1em;
@@ -254,6 +254,10 @@ class SimpleCard extends HTMLElement {
             display: inline-block;
             margin: 0 0 0.5em 0.5em;
             color: var(--primary-text-color)
+          }
+          h2.sc-subtitle{
+            font-size: 1.45em;
+            font-weight: 400;
           }
           p.sc-text{
             font-size: 1.2em;
@@ -279,19 +283,25 @@ class SimpleCard extends HTMLElement {
             text-align:right;
           }
           @media (min-width: 481px) and (max-width: 767px) {
-            h2.sc-title{
+            h2.sc-title, h2.sc-subtitle{
               margin: 0 0 0.5em 0; 
               font-size: 1.5em;
+            }
+            h2.sc-subtitle{
+                font-size: 1.25em;
             }
             p.sc-text{
                 font-size: 1.1em;
             }
          }
          @media (min-width: 320px) and (max-width: 480px){
-            h2.sc-title{
+            h2.sc-title, h2.sc-subtitle{
                 margin: 0 0 0.5em 0; 
                 font-size: 1.5em;
                 padding-left: 6px;
+            }
+            h2.sc-subtitle{
+                font-size: 1.25em;
             }
             p.sc-text{
                 font-size: 1.1em;
@@ -334,10 +344,10 @@ class SimpleCard extends HTMLElement {
         const useLayer = this.height != "100%"
         let contentLayer = null
 
-        if (this._config.title) {
+        if (this._config.title || this._config.subtitle) {
             // add the title and the icon to the ha-card
             const _title = document.createElement("h2")
-            _title.setAttribute("class", "sc-title")
+            _title.setAttribute("class", this._config.title ? "sc-title" : "sc-subtitle")
             if (this._config.icon) {
                 const iconel = document.createElement("ha-icon")
                 iconel.setAttribute("icon", this._config.icon)
@@ -345,11 +355,15 @@ class SimpleCard extends HTMLElement {
                 iconel.style.cssText = "--mdc-icon-size: 1.2em"
                 _title.appendChild(iconel)
                 const view_titletext = document.createElement("span")
-                view_titletext.innerHTML = this._config.title
+                if(this._config.subtitle){
+                    view_titletext.setAttribute("style", "vertical-align:top")
+                    iconel.style.cssText = "--mdc-icon-size: 1.2em;padding: 2px 4px 0 0;"
+                }                   
+                view_titletext.innerHTML = this._config.title || this._config.subtitle || ""
                 _title.appendChild(view_titletext)
             } else {
-                _title.style.cssText = "margin-left:0.8em !important"
-                _title.innerHTML = this._config.title
+                //_title.style.cssText = "margin-left:0.8em !important"
+                _title.innerHTML = this._config.title || this._config.subtitle || ""
             }
             content.appendChild(_title)
         }
