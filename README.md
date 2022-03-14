@@ -126,28 +126,49 @@ Add a custom card in your `ui-lovelace.yaml`
 
 ```yaml
 views:
-  - title: Layout Simple card
+  - title: Testcase Smartcards
+    icon: mdi:counter
+    id: testcase_smartcards
     panel: true
+    path: smartcards
     cards:
-      - type: 'custom:cards-layout'
-        title: Simple Card Testcases
-        icon: 'mdi:tape-measure'
-        width: 80%
-        cards:
+      - type: custom:cards-layout
+        toolbar:
+          backgroundcolor: '#366484'
+          iconcolor: '#FFFFFF'
+          visible: true
+        header:
+          title: Smarthome
+          icon: mdi:counter
+          iconcolor: '#FFFFFF'
+          style: >-
+            background-image:
+            url('/hacsfiles/cards-layout/assets/ha-header-house.png');
+            background-color: #366484; color: #FFFFFF;
+        page:
+          title: Übersicht
+          icon: mdi:view-agenda
+          iconcolor: '#FFFFFF'
+          description: Beispiel für die Smartcards Uhr, Buttons
+          width: 95%
+          style: >-
+            color: #FFFFFF; background: linear-gradient(to bottom, #366484,
+            #182848);
+        content:
           - row:
-              - col: null
+              - columns: null
                 width: 50%
-                height: 320
+                title: Testcase Clock
+                description: Eine einfache Uhr mit Text
                 entities:
-                  - type: 'custom:simple-card'
-                    title: Clock and Text
+                  - type: custom:simple-card
                     clock: true
                     style: >
                       height:300px; background: rgba(0, 0, 0, 0)
                       linear-gradient(rgb(241, 39,17), rgb(245, 175, 25)) repeat
                       scroll 0% 0%; height: 300px; color: #FFFFFF
                     title: Willkommen Fremder
-                    icon: 'mdi:home'
+                    icon: mdi:home
                     text: >-
                       Dies ist ein Beispiel für eine einfache Karte mit einer
                       Uhr.
@@ -156,9 +177,9 @@ views:
           - row:
               - col: null
                 entities:
-                  - type: 'custom:simple-card'
+                  - type: custom:simple-card
                     title: Buttons
-                    icon: 'mdi:home'
+                    icon: mdi:home
                     mode: buttons
                     entities:
                       - entity: sensor.gas_verbrauch_m3
@@ -180,8 +201,7 @@ views:
                       - entity: sun.sun
                       - entity: weather.home
                       - entity: light.fitnessraum_licht
-                        icon: 'mdi:floor-lamp'
-
+                        icon: mdi:floor-lamp
 ```
 
 <a href="https://www.buymeacoff.ee/zibous" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="41" width="174"></a>
