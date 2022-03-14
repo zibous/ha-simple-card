@@ -1,19 +1,33 @@
 views:
-  - title: Layout Testcase
+  - title: Testcase Smartcards
+    icon: mdi:counter
+    id: testcase_smartcards
     panel: true
+    path: smartcards
     cards:
-      - type: 'custom:cards-layout'
-        title: Auswertung (Header)
-        icon: 'mdi:tape-measure'
-        description: |
-          Testanzeige für verschiedene Darstellungungen:
-          <ul>
-            <li>Bilder</>
-            <li>Grafiken</>
-            <li>Buttons</>
-          </ul>
-        width: 80%
-        rows:
+      - type: custom:cards-layout
+        toolbar:
+          backgroundcolor: '#366484'
+          iconcolor: '#FFFFFF'
+          visible: true
+        header:
+          title: Smarthome
+          icon: mdi:counter
+          iconcolor: '#FFFFFF'
+          style: >-
+            background-image:
+            url('/hacsfiles/cards-layout/assets/ha-header-house.png');
+            background-color: #366484; color: #FFFFFF;
+        page:
+          title: Übersicht
+          icon: mdi:view-agenda
+          iconcolor: '#FFFFFF'
+          description: Beispiel für die Smartcards Uhr, Buttons
+          width: 95%
+          style: >-
+            color: #FFFFFF; background: linear-gradient(to bottom, #366484,
+            #182848);
+        content:
           - row:
               - col: null
                 width: 100%
